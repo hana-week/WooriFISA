@@ -1,0 +1,448 @@
+food = input('오늘 점심은 뭐 드실래요?: ')
+
+if food: # 참
+    print(food + '를 드시는군요.')
+    print('맛점')
+else: # 거짓
+    print('점심 안 드시면 성격이 나빠져요.')
+
+if 1: # True
+    print('참')
+    print('실행되는 수준')
+
+if 0: # False
+    print('참')
+    print('실행되는 수준')
+
+if True :
+    print ("1") # 참이라 실행
+    print ("2") # 참이라서 실행
+else :
+    print("3")
+
+print("4") # 그냥 실행
+
+if True : # IndentationError: unexpected indent
+   print ("1") # 참이라 실행
+   print ("2") # 참이라서 실행
+else :
+   print("3")
+
+print("4") # 그냥 실행
+
+if True :  # IndentationError: expected an indented block after 'if' statement on line 1
+    pass # 아무것도 동작하지 않음. 문법오류를 막기 위해 틀어막고 있다.
+else :
+   print("3")
+
+print("4") # 그냥 실행
+
+arr = [1,2,3,4,5]
+
+# 1이라는 값이 arr에 있으면 참, 없으면 거짓을 출력하도록
+if 1 in arr:
+    print('참')
+else:
+    print('거짓')
+
+ans = input('어깨를 돌리셨습니까?')
+
+match ans: # ans에 뭐가 있는지 보자
+    case 'Y':  # 참인지 판단할게
+        print('좋군요')
+    case _:   # 거짓인 모든 경우
+        print('그렇군요')
+
+# 시퀀스, OR, *
+examples = [
+    ['python'],
+    ['1'],
+    ['아침', '점심', '저녁'],
+    ['score', 100, 22, 90]
+]
+
+x = ['python']
+# 패턴 매칭에 최적화된 조건문
+
+# for x in examples:
+match x:
+    case ['python']: # 첫번째 참인 경우
+        print(x)
+        # break
+    case ['아침', '점심']: # 두번째 참인 경우
+        print(x)
+            # break
+    case ['1'] | ['2']:   # 세번째 참인 경우
+        print(x)
+            # break
+    case ['아침', z]:   # 네번째 참인 경우
+        print(z)
+            # break
+    case ['score', *z]:  # 다섯번째 참인 경우
+        print(z)
+    # case _:  # 앞의 다섯개에 모두 해당하지 않는 (거짓)인 경우
+    #     print('나머지 모든 경우')
+
+# 오늘 점심메뉴를 입력받고
+# 피자 / 햄버거 / 치킨 / 김밥 중에 하나면 'ans를 먹자!!' 아니면 '랜덤으로 뽑자'를 출력해보세요.
+# match~case 문으로
+lunch = input('오늘 점심 메뉴 ? ')
+
+match lunch:
+    case '피자': # 참1
+        print(lunch+'를 먹자!!')
+    case '햄버거':  # 참2
+        print(lunch+'를 먹자!!')
+    case '치킨': # 참3
+        print(lunch+'를 먹자!!')
+    case '김밥': # 참4
+        print(lunch+'를 먹자!!')
+    case _: # 거짓
+        print('랜덤으로 뽑자')
+
+# 삼항연산자 - 아주 간단한 if~ else 문을 한줄로 작성할 수 있는 문법
+ans = input('어깨를 돌리셨습니까?')
+if ans == 'Y':
+    print('좋군요')
+else:
+    print('그렇군요')
+
+ans = input('어깨를 돌리셨습니까?')
+print('좋군요' if ans == 'Y' else '그렇군요')
+
+# 값을 변경하면서 꺼내쓸 때
+# 계속 재사용할 일이 있을 때
+ans = input('어깨를 돌리셨습니까?')
+if ans  == 'Y':
+    print('좋군요')
+elif ans  == 'y':
+    print('좋군요')
+else:
+    print('그렇군요')
+
+# 논리연산자를 활용해서 다중조건문과 같은 결과를 만들 수도 있습니다.
+ans = input('어깨를 돌리셨습니까?')
+if ans  == 'Y' or ans  == 'y':
+    print('좋군요')
+else:
+    print('그렇군요')
+
+### 문자열이 '숫자'로만 이루어져있는지 확인
+#  1) str.isdigit("판단하고자 하는 문자열")
+#  2) "판단하고자 하는 문자열".isdigit()
+
+a = '1234' # 타입이 str이지만 온전히 숫자만 가지고 있다면 True를 반환
+b = '1/2'
+c = '가나다'
+d = '가나다123'
+e = '3²'
+f = '-1'
+g = '½'
+
+print('isdigit()') # 문자열의 모든 문자가 숫자(0-9)이면 True를 출력
+print(a.isdigit()) # True
+print(b.isdigit()) # False
+print(c.isdigit()) # False
+print(d.isdigit()) # False
+print(e.isdigit()) # True
+print(f.isdigit()) # False '-1' 은 '-'가 음수이기 때문에
+print(g.isdigit()) # False
+
+print('isdecimal() - 특수문자는 숫자로 취급하지 않음')
+print(a.isdecimal()) # True
+print(b.isdecimal()) # False
+print(c.isdecimal()) # False
+print(d.isdecimal()) # False
+print(e.isdecimal()) # False
+print(f.isdecimal()) # False
+print(g.isdecimal()) # False
+
+print('isnumeric() -  문자열의 모든 문자가 숫자(분수, 아래 첨자, 위 첨자 등의 다른 숫자도 포함)')
+print(a.isnumeric()) # True
+print(b.isnumeric()) # False
+print(c.isnumeric()) # False
+print(d.isnumeric()) # False
+print(e.isnumeric()) # True
+print(f.isnumeric()) # False
+print(g.isnumeric()) # True
+
+print('isalpha() - 알파벳으로만 이루어진 문자열 판별')
+print(a.isalpha()) # False
+print(b.isalpha()) # False
+print(c.isalpha()) # True
+print(d.isalpha()) # False
+print(e.isalpha()) # False
+print(f.isalpha()) # False
+print(g.isalpha()) # False
+
+a = int(input('a의 주사위 숫자는? : '))
+b = int(input('b의 주사위 숫자는? : '))
+
+# if 안에 if가 들어있다 -> 중첩조건문
+if a in range(1,7) and b in range(1,7):
+    if a > b:
+        print('a가 이긴다')
+    elif a < b:
+        print('a가 진다')
+    else:
+        print('a가 비긴다')
+else:
+    print('주사위의 범주 (1-6)에 알맞게 입력을 다시 해주세요.')
+
+a = input('a의 값을 입력하세요')
+b = input('b의 값을 입력하세요')
+
+
+# isdigit()은 판단만 할 뿐 형변환은 해주지 않습니다.
+# 조건문이 여러개 돌아가는데 간결하게 만들 수 있습니다
+# 1~6사이 범위의 '숫자'인지를 먼저 판단하도록 바꿔볼 수 있겠습니다.
+if a.isdigit() != True:
+    a = input('a의 값을 다시 입력하세요')
+if b.isdigit() != True:
+    b = input('b의 값을 다시 입력하세요')
+
+if a > b:
+    print('a가 이긴다')
+elif a == b:
+    print('a가 비긴다')
+else:
+    print('a가 진다')
+
+# 1. if
+# 2. if ~ else
+# 3. if ~ elif ~ elif ~ else 다중조건문
+# 4. if (a) or (b) ~ 논리 연산을 활용한 조건문
+# 5. 중첩 조건문
+# if 안에
+#    다시 if
+
+arr = [1, 2, 9]
+
+if 1|2|3 in arr: # 파이썬에서는 비트연산이 허용은 됩니다. 하지만 다른언어와 조금 다르게 동작하기 때문에 권장되지 않습니다.
+    print('참')
+else:
+    print('거짓')
+
+1 or 2 or 3 # 1 이 참이므로 뒤는 보지않고 1에서 평가 멈춤
+
+if True: # 1 대신 Ture, 0 대신 False를 채워주시는 것이 권장됩니다.
+    print('참')
+
+# 중첩조건문 (12시 10분)
+
+# 한메일 id를 치면 id가 틀렸습니다. 비밀번호가 틀렸습니다.
+# id가 틀리든 비밀번호가 틀리든 '입력하신 정보가 다릅니다'
+user_id = 'abcd'
+user_pw = '1234'
+
+# id와 pw를 입력받아서
+id = input('ID를 입력하세요: ')
+pw = input('pw를 입력하세요: ')
+
+# 둘다 일치하면
+if user_id == id and user_pw == pw:
+    #'로그인 되셨습니다'
+    print('로그인 되셨습니다.')
+#일치하지 않으면
+else:
+    #'로그인을 다시 시도하세요."
+    print('로그인을 다시 시도하세요.')
+
+# 1.  '비밀번호 입력하세요'를 그 다음에 출력하에 비밀번호를 확인받는 조건문.
+user_id = 'abcd'
+user_pw = '1234'
+
+# id와 pw를 입력받아서
+id = input('ID를 입력하세요: ')
+if user_id == id:  # id가 맞는지 확인하고,
+    pw = input('pw를 입력하세요: ') # '비밀번호 입력하세요'를 그 다음에 출력하
+    if user_pw == pw:
+       print('로그인 되셨습니다.')
+    else:
+        print('비밀번호 틀립니다.')
+#일치하지 않으면
+else:
+    print('ID가 틀립니다.')
+
+1# 2.  id, 비밀번호 다 입력받고, 둘중에 뭐가 틀렸는지 알려주는 조건문.
+user_id = 'abcd'
+user_pw = '1234'
+
+# id와 pw를 입력받아서
+id = input('ID를 입력하세요: ')
+pw = input('pw를 입력하세요: ')
+
+# flag 변수를 활용해서 True / False 를 제어해서 중첩/반복이 너무 깊어지지 않게(4번 초과는 지양) 제어를 합니다.
+
+if user_id == id:
+    if  user_pw == pw:
+        print('로그인 되셨습니다.')
+    else:
+        print('비밀번호가 틀립니다.')
+else:
+    print('ID가 틀립니다.')
+
+n = 1 # while문 밖에 반복을 끝낼 실마리
+
+while n <= 10 : # while 명제:
+    print('참') # 실행문
+    n = n + 1 # 반복을 언젠가 끝낼 수 있도록 하는 조건
+
+# 1, 3, 5, 7, 9를 출력하는 while문
+
+n = 1 # while문 밖에 반복을 끝낼 실마리
+
+while n <= 10 :
+    print(n)
+    n = n + 2
+
+n = 1 # while문 밖에 반복을 끝낼 실마리
+
+while n <= 10 :
+    if n % 2 == 1:
+        print(n)
+    n = n + 1
+
+start_num = 1 # 시작점
+final_num = int(input('숫자를 입력하세요')) # while문을 끝낼 실마리
+sum_ = 0 # 숫자를 계속 더해갈 임시저장소
+
+while  start_num <= final_num :
+    print('start_num', start_num,  'sum_', sum_)
+    sum_ += start_num  # 우리가 필요한 값
+    start_num += 1   # 명제를 변화시킬 값
+
+sum_
+
+i = True # flag 변수를 활용 - True / False로 값은 변경해서 특정 조건이 성립하는지를 체크해주는 변수
+
+print('무언가 입력해보세요')
+
+while i:
+    answer = input('종료하려면 x 를 누르세요')
+    print(answer)
+    if answer == 'x':
+        i = False
+
+print('프로그램이 종료됨')
+
+# break 는 반복을 강제 종료 시키는 키워드(예약어)
+
+while True:
+    print('무언가 입력중입니다')
+    x = input('종료하려면 x를 입력하세요 : ')
+    if x == 'x':
+        print('무한 반복이 종료되었습니다')
+        break
+
+# break 는 반복을 강제 종료 시키는 키워드(예약어)
+
+while True:
+    print('무언가 입력중입니다')
+    x = input('종료하려면 x를 입력하세요 : ')
+    if x == 'x':
+        break
+        print('무한 반복이 종료되었습니다') # 아무도 이 코드가 있는줄 모를 거에요. break를 먼저 만나서 반복문을 빠져나가기 때문에
+
+i = 2  # 시작 조건
+
+while i < 11 :
+    print(i) # 하고싶은 동작
+    i += 2  # 명제를 변화시킬 실마리
+
+i = 1  # 시작 조건
+
+while i < 11 :
+    if i % 2 == 0:
+        print(i) # 하고싶은 동작
+    else:
+        pass  # 퇴근해야 하는데 파이썬 문법이 빈 칸을 용납하지 않을 때
+    i += 1  # 명제를 변화시킬 실마리
+
+i = 1  # 시작 조건
+
+while i < 11 :
+    if i % 2 == 0:
+        print(i) # 하고싶은 동작
+    else:
+        break # 만나는 순간 강제종료
+    i += 1  # 명제를 변화시킬 실마리
+
+i = 1  # 시작 조건
+
+while i < 11 :
+    if i % 2 == 0:
+        print(i) # 하고싶은 동작
+    else:
+        continue # 만나면 그 때 한번만 해당 실행문 이하를 건너뛰고 다시 반복을 이어나갑니다.
+        print('after continue')
+    i += 1  # 명제를 변화시킬 실마리
+
+# 가장 짧고 덜 반복하는 코드를 작성해서 1~20사이의 3의 배수만 더하는 while문을 만들어보세요.
+i = 3
+while i < 21 :
+    print(i)
+    i += 3
+
+cnt, output = 0, 0
+while (cnt := cnt + 1) < 20: # := 바다코끼리 연산자 cnt라는 변수에 cnt+1을 할당하는 동시에 사용하는 연산자
+    output += cnt if cnt % 3 == 0 else 0
+print(output)
+
+prices = [10, 20, 30]
+for price in prices: # _ 공갈문자
+    print(price)
+
+# for 변수 in 이터러블:
+    # 실행문
+
+for i in range(10, 31, 10):
+    print(i)
+
+# input으로 값을 입력받아서 6부터 그 값까지 거꾸로 출력하는 for문을 만들어주세요
+num = input('값을 입력하세요: ')
+
+for i in range(6, int(num)-1, -1):
+    print(i)
+
+for i in range(3):
+    print(str(i+1)+'번 끝') # 반복회차에 따라 값이 변하는 부분
+    print("-------") # 변화없이 반복출력되는 부분
+
+list1 = ['a','b','c','d','e','f','g','e','f','g','h']
+
+
+for i in range(len(list1)):
+    print(i, list1[i]) # 반복회차에 따라 값이 변하는 부분과 방번호를 함께 사용할 수 있는데
+
+for fruit in fruits: # dict는 웬만한 명령어/메서드가 key를 중심으로 동작
+    print(fruit)
+
+for fruit in fruits.values(): # value만 출력
+    print(fruit)
+
+for fruit in fruits: # key - value 형식으로 출력
+  print(fruit + ' - ' + fruits[fruit])
+
+for k, (v1, v2) in sale1.items():
+    #print(k, v1, v2)
+
+    if v1 > 1000:
+        print(k, v1)
+
+    if v2 > 1000:
+        print(k, v2)
+
+# 실습3. 손님들이 배가 불렀다며 연지상회를 더이상 찾지 않아서 눈물의 이별세일을 합니다.
+# 장부(sale1)에는 그대로 있되 출력결과만 할인된 상태의 값으로 20프로씩 물건값을 할인해서 판매하는 가격표를 출력해주세요.
+for k, v in sale1.items():
+    for vv in v:
+        print(k, int(vv*0.8))
+
+#    실습4. 폐업처리를 하려고 보니 장부의 가격과 틀려서 더 많은 세금을 내게 생겼습니다.
+# 각 상품의 장부 가격(sale1)을 20프로씩 할인된 물건값으로 변경해주세요.
+for k in sale1.keys():
+    for i in range(len(sale1[k])): # 소프트코딩
+        sale1[k][i] = int(sale1[k][i]*0.8)
+print(sale1)
+
