@@ -1,0 +1,267 @@
+# # 이름을 작성하기 위한 규칙 - 네이밍 컨벤션(convention)
+# path = 'my documents'
+
+# my-documents  # kebab-case   URL
+# my_documents # snake_case   Python
+# myDocumentsFolder # camelCase  Java
+
+# MyClass # PascalCase   Class를 구분하기 위해서 첫글자를 대문자로 작성
+
+!python --version
+# ! (셸 커맨드)
+# 셸(Shell)에서 실행되며, 따라서 리눅스 기반의 명령어들을 사용할 수 있습니다.
+# 셸 커맨드를 사용하여 파일 시스템 탐색, 외부 패키지 설치 등의 작업을 할 수 있습니다.
+
+%%time
+print('hello')
+# %, %% : 매직커맨드. 파이썬 코드는 아니나 코랩 환경 내에서 특정 기능을 실행하도록 설계된 명령어입니다.
+## '%' 또는 '%%' 기호를 사용하여 실행됩니다. '%'는 한 줄에 대해, '%%'는 셀 전체에 대해 적용됩니다.
+
+# 주어.동사(목적어)
+str.find('사과나무', '부') # 0 / 1 ~~~  순서 0 부터 시작되기 때문에
+
+1 + 1
+1 + 3 # 한줄 한줄 코드를 읽고 실행합니다. (인터프리터 언어)
+# 1+1은 실행이 안 된게 아닙니다. 다만 실행이 되고 나서 인터프리터 언어의 특성상 한줄씩 결과를 리턴하기 때문에 (repl) 다음 출력결과에 의해서 앞의 결과가 덮어써진 겁니다.
+
+#This's a dog 이라는 문장을 docs라는 변수에 넣고 출력해주세요.
+docs = 'This is a dog'
+print(docs)
+
+docs = 'This\'s a dog' # \ escaping 문자를 사용해서 감싸주는 경우도 있습니다.
+print(docs)
+
+docs = """This's a dog""" # 멀티라인 """ """ 또는 ''' '''로 감싸주면 원본 스트링을 그대로 저장합니다.
+print(docs)
+
+id(docs) # 변수 매번 같은 값을 꺼내 쓰거나, 숫자 혹은 배열 등 특정 값을 evaluation에 따라 변경해야 할 때
+
+a = 10
+b = 20
+# 일 때
+# b와 a에 있는 자료를 변경해보세요
+
+a = b # a = 20
+b = a # b = 20
+a, b  # 20, 20 인터프리터 언어
+
+a, b = b, a # swap
+
+str.find('사과나무', '무') # 원래의 예약어로 사용할 수 있게 됩니다.
+
+# 고정소수점 방식으로 실수를 사용하려면
+import decimal
+
+decimal.Decimal('.1') + decimal.Decimal('.2')
+
+type(1.) # 지수부 생략 가능
+type(.9) # 정수부 생략 가능
+type(.) # . 은 에러가 납니다.
+
+# 명령어 여러개를 한줄에 쓸 때는 세미콜론을 사용해주세요
+'hello' ; "hello" ; """hello
+python"""
+
+' ' == '' # 공백도 하나의 문자열의 일부입니다.
+
+'24' == '24 ' # 잘한거 같은데 에러가 나면 앞뒤에 공백이 숨어있는건 아닌지 꼭 확인해주셔야 한다.
+
+'a' == 'A' # 아스키코드로 변환해서 구분하기 때문에
+
+'a' > 'A' # 소문자 a의 아스키코드 값이 대문자 A의 아스키코드 값보다 크기 때문에
+
+print('안녕하세요\t김\b연지입니다') # \t : tab
+
+2 ** 3 # 지수연산 (제곱) **
+
+2 // 3 # 몫연산
+
+'김연지' *2 # 문자열끼리 덧셈, 문자열 * 숫자 만큼 곱셈은 가능
+
+a += b # a = a+b 와 같은 뜻입니다.
+a
+
+a, b = 30, 10
+a /= b # a = a / b
+a
+
+c /= b # c = c/b
+
+1 <= x <= 3 # 파이썬에서는 가능
+
+(9%2 == 1) and (2**3 == 8) or not(2*3 == 6)
+# True and True or not True
+#                    False
+# True and True
+
+# 왼쪽 -> 오른쪽
+# ( ) 안에 있는 것
+# - 사칙연산/ + -
+# 비교연산
+# 논리 연상
+
+not(1 != 1) and (4/2 == 2) or (True == False)
+# not False and True or False
+
+# 동일성(identity)과 동등성(equality)
+# is (동일성 비교, 타 언어의 ===과 같은 역할) / == (동등성 비교, 값/자료형 확인)
+
+True == 1 # 숫자 자료형(int/float/bool)끼리는 비교연산자가 호환됩니다
+
+1. <= 1 # 숫자 자료형끼리는 비교연산자가 호환됩니다.
+
+'1.' == 1 # 문자 자료형과는 호환 안 됩니다.
+
+a = 1 # int
+b = 1.0 # float
+c = '1' # str
+# === 같은 메모리주소에서 나오는지
+a is b # === 과 같은 역할(같은 주소에서 나오는지 확인)
+
+a == b  # 서로 호환이 되는 숫자 자료형이니까
+
+# 어떤 경우에 False가 나오는지
+bool()
+
+# '2231.66' 값을 str으로 받아왔어요. int로 변경하려면 어떻게 해야 할까요?
+int(float('2231.66'))
+
+# 1 이라는 값이 하나만 들어있는 tu1, li1, ra1
+tu1 = (1, ) # 콤마가 있다 = 값은 하나지만 연속된 자료형이구나 라고 파이썬 인터프리터가 판단하도록 # () 우선순위 연산자, int('112') 함수의 호출연산자로도 쓰입니다.
+li1 = [1]
+ra1 = range(1)
+print(type(tu1), type(li1), type(ra1))
+
+tu1[0], li1[0], ra1[0] # 시퀀스 자료형은 변수명 뒤에 대괄호를 쓰고 그 안에 방번호를 넣어서 호출합니다.
+
+ra1 = range(1, 2) # 끝점 하나 앞까지 출력
+
+ra1 = range(2, 7, 2) # 시작점, 끝점+1, 몇칸씩 건너뛸지(step)
+
+li1 = [1, '김연지', (1,2), 3.15, None] # 서로 다른 자료형을 간직할 수 있습니다.
+
+tu1 = (1, '김연지', (1,2), 3.15, None) # 서로 다른 자료형을 간직할 수 있습니다.
+
+tu1[1] = ['짱구', '짱아'] # TypeError: 'tuple' object does not support item assignment
+
+range('가', '마', 2) # TypeError: 'str' object cannot be interpreted as an integer
+
+tu1.index((1, 2)) # 해당 원소가 있는 방번호(index)를 출력해줍니다.
+
+li1[-1] = 1 # 음수 인덱싱
+li1
+
+li1.count(1) # 해당 값이 몇개 있는지 확인할 때
+
+1 in li1 # 값이 있는지 확인 T/F
+
+a[2] = '가' # TypeError: 'str' object does not support item assignment
+
+ra1.index(2) # ValueError: 3 is not in range
+
+ra1.count(2) # 1
+
+tu1 + tu1 # 불가변형이라고 했는데 왜??
+# 원본을 변형시킬수 있는지로 가변형/불가변형을 따집니다.
+
+tu1[1:4] # 1~ 3 변수명[시작인덱스:끝인덱스+1]
+
+tu1[1:4:2] # 변수명[시작인덱스:끝인덱스+1:step(얼마만큼 건너뛸 것인지)]
+
+tu1[7] # IndexError: tuple index out of range
+
+tu1[0:7:2] # slicing은 끝점을 초과하는 인덱스번호를 지정해줘도 out of range 에러가 나지 않습니다.
+
+tu1[0::2]  # 끝점 생략 가능
+tu1[::2] # 시작점 생략 가능
+
+li1 # 시퀀스 크기와 상관없이 가장 마지막원소를 늘 참조하게 하고 싶다면
+li[-1]
+
+# 자료가 변하면 결과도 달라지도록 하는 종류의 코딩 : 소프트 코딩
+li[-1]
+
+# 자료가 변해도 계속 같은 결과를 나타내도록 고정하는 종류의 코딩 : 하드 코딩
+li[4]
+
+li[-8] # IndexError: list index out of range 음수 인덱스도 인덱스 에러 있습니다
+
+'yEONJI' in content # 소문자 대문자 구분하기 때문에
+
+li.extend(8) # TypeError: 'int' object is not iterable
+li
+
+li.extend([8]) # 배열을 확장하는 개념
+li
+
+li[8][0] # 2차원 배열
+
+li.insert(13, '십삼') # 원본을 바꿨기 때문에
+
+li.remove(12) # 선형자료구조에서는 가장 처음 발견된 값만 삭제하고 끝나버림
+
+# 조건만 메모리에 간직하고 있다가 해당 값을 써야할 때 평가 (지연 평가 - lazy evalution)
+# 왜? 메모리를 아끼려고
+
+# () []
+# 빈 딕셔너리
+dict1 = {}
+type(dict1)
+
+dict3['new key'] = '새 값' # NameError: name 'dict3' is not defined 없는 딕셔너리에 새 값을 넣는 것은 불가능하다
+
+#  'clear',
+#  'keys',
+#  'values'
+#  'items',
+#  'pop',
+#  'copy',
+#  'fromkeys',
+#  'get',
+#  'popitem',
+#  'setdefault',
+#  'update',
+
+dict2.pop('문패') # 딕셔너리의 기본 메소드들은 key를 중심으로 동작합니다.
+
+dict2 # 원본에서 '문패' 사라짐
+
+None in dict2 # value라서 False
+
+dict2.get('문패3')  # None
+dict2.get('문패2') # [1, 2, 3, 4, '안녕']
+
+dict2['문패'] # KeyError: '문패'
+
+# getter(값을 가져오는 함수) / setter(값을 변경하는 함수)
+dict2.setdefault('문패2', '찾으시는 정보가 없습니다')
+
+# count(sub[, start[, end]])
+'김연지가 신짱구를 좋아한다.'.count('좋아')
+
+"The sum of 1 + 2 is {1} 그리고 {0}".format(1+2, '빼기도 해줘') # *args
+
+# {0: 1+2, 1: '빼기도 해줘'}
+
+"The sum of 1 + 2 is {num} 그리고 {msg}".format(num=1+2, msg='빼기도 해줘') # **kwargs
+
+my_playlist = {'힙합':'Definition', '힙합':'Chaining Day', '힙합':'Not Like Us', '힙합':'Money Tree', '힙합':'Runaway'}
+my_playlist # key가 있으면 그 key의 value를 변경 / 없으면 새로운 key를 생성하기 때문에
+
+my_playlist = {'힙합':['Definition','Chaining Day','Not Like Us','Money Tree','Runaway']}
+my_playlist # key가 있으면 그 key의 value를 변경 / 없으면 새로운 key를 생성하기 때문에
+
+set4 = {'a', ['b', 'c'], 'a'} # TypeError: unhashable type: 'list'
+
+set1 & set2 # 교집합 찾아줍니다
+set1 - set2 # 차집합
+set1 | set2 # 합집합
+
+set1[2] # TypeError: 'set' object is not subscriptable
+
+arr2D = ['Hello', 'Bye', 'Hi', ['Goodnight', 'Goodmorning', 'Goodafternoon']]
+arr2Dcopy = arr2D # 얕은복사
+id(arr2D), id(arr2Dcopy)
+
+# 데이터 분석 관련된 최근 패키지들은 거의 딥카피를 기본 복사방법으로 차용하고 있습니다
+
