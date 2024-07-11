@@ -1,0 +1,317 @@
+str1.split(sep='/', maxsplit=2)   # 파라미터=아규먼트(인자) 정해진 순서대로 넣으면 파라미터 생략 가능
+
+str1.split(maxsplit=2, sep='/')   # 파라미터=아규먼트(인자).
+
+'아 나는 아침이 힘들어....'.split() # default 는 ' '인 것 확인
+
+a = ['짱구', '짱아', '장구엄마', '짱구아빠']
+' '.join(a) # split과 반대로 itrerable 객체를 string으로 만들어줌
+
+' '.join(dict1) # key 중심으로 동작
+
+' '.join(dict1.values())  # TypeError: sequence item 0: expected str instance, int found
+
+string = """It might seem crazy what I am 'bout to say
+Sunshine she's here, you can take a break
+I'm a hot air balloon that could go to space
+With the air, like I don't care, baby by the way
+Huh (Because I'm happy)
+Clap along if you feel like a room without a roof
+(Because I'm happy)
+Clap along if you feel like happiness is the truth
+(Because I'm happy)
+Clap along if you know what happiness is to you
+(Because I'm happy)
+Clap along if you feel like that's what you wanna do
+Here come bad news talking this and that (Yeah)
+Well give me all you got, don't hold back (Yeah)
+Well I should probably warn you I'll be just fine (Yeah)
+No offence to you don't waste your time
+Here's why
+Clap along if you feel like a room without a roof
+(Because I'm happy)
+Clap along if you feel like happiness is the truth
+(Because I'm happy)
+Clap along if you know what happiness is to you
+(Because I'm happy)
+Clap along if you feel like that's what you wanna do
+Uh, bring me down
+Can't nothing, bring me down
+My level's too high to bring me down
+Can't nothing, bring me down, I said
+Bring me down, can't nothing
+Bring me down
+My level's too high to bring me down
+Can't nothing, bring me down, I said
+Clap along if you feel like a room without a roof
+(Because I'm happy)
+Clap along if you feel like happiness is the truth
+(Because I'm happy)
+Clap along if you know what happiness is to you
+(Because I'm happy)
+Clap along if you feel like that's what you wanna do
+Clap along if you feel like a room without a roof
+(Because I'm happy)
+Clap along if you feel like happiness is the truth
+(Because I'm happy)
+Clap along if you know what happiness is to you
+(Because I'm happy)
+Clap along if you feel like that's what you wanna do
+Uh, bring me down (Happy, happy, happy, happy)
+Can't nothing (Happy, happy, happy, happy)
+Bring me down, my level's too high
+To bring me down (Happy, happy, happy, happy)
+Can't nothing (Happy, happy, happy, happy)
+Bring me down, I said
+Clap along if you feel like a room without a roof
+(Because I'm happy)
+Clap along if you feel like happiness is the truth
+(Because I'm happy)
+Clap along if you know what happiness is to you (ayy, ayy, ayy)
+(Because I'm happy)
+Clap along if you feel like that's what you wanna do
+Clap along if you feel like a room without a roof
+(Because I'm happy)
+Clap along if you feel like happiness is the truth
+(Because I'm happy)
+Clap along if you know what happiness is to you (hey)
+(Because I'm happy)
+Clap along if you feel like that's what you wanna do
+Come on"""
+
+string_og = string # 백업
+
+string = string.replace("\n", ' ')
+string = string.replace('(', '').replace(')', '') #  chaining 방식
+string
+
+happy = string.split()
+for happ in happy:
+    if "'" in happ:
+        print(happ) # 'bout -> about / 's -> is / 'm -> am / 't -> not / 'll -> will
+
+string2 = string.replace("\n", " ").replace("'ll", " will").replace("can't", "cannot") \
+        .replace("don't", "do not").replace("'bout", "about").replace("'m", " am").replace('\'s', ' is') \
+        .replace('(', ' ').replace(')', ' ').replace('.', ' ').replace(',', ' ')
+
+string2
+
+string2.lower().count('happy') # 35
+string2.casefold().count('happy') # 35
+
+string.casefold() # lowe 보다 더 많은 문자열을 소문자화할 수 있는 함수
+
+happy # 각 단어의 빈도 계산
+# 단어 : 등장빈도수   # 있는키는 그 value에 들어가고, 없는키는 key:value 추가
+word_counts = {}
+
+# 단어를 하나씩 돌면서
+for word in happy:
+    # 있는 key이면 value +1
+    if word.casefold() in word_counts:
+        word_counts[word.casefold()] +=1
+
+    # 없는 key이면 key : 1
+    else:
+        word_counts[word.casefold()] =1
+
+print(word_counts)
+
+count_word_flipped = []
+
+# 반복문으로 (빈도수, 단어) 튜플로 리스트에 적재
+for k, v in word_counts.items():
+    count_word_flipped.append((v, k))
+
+count_word_flipped
+
+sorted(count_word_flipped, reverse=True)[:10]
+
+ str1.find('ddI', 4) # -1 은 찾는 값이 없다는 뜻으로 반환되는 숫자
+
+a = str1.find('ddI', 4) # -1 은 찾는 값이 없다는 뜻으로 반환되는 숫자
+
+import re
+
+p = re.compile('AI')  # 찾을 패턴을 올려놓고
+p.match(str1)
+
+import re
+
+p = re.compile('AI')  # 찾을 패턴을 올려놓고
+p.search(str1)
+
+import re
+
+p = re.compile('AI')  # 찾을 패턴을 올려놓고
+p.findall(str1)
+
+import re
+
+p = re.compile('AI')  # 찾을 패턴을 올려놓고
+p.finditer(str1)
+
+import re
+
+p = re.compile('AI')  # 찾을 패턴을 올려놓고
+tuple(p.finditer(str1))
+
+# match() : 문자열의 첫 시작부터 정규식과 매치되는지 조사한다.
+# search() : 문자열 전체를 검색하여 정규식과 매치되는지 조사한다.
+# findall() : 정규식과 매치되는 모든 문자열(substring)을 리스트로 돌려준다.
+# finditer() : 정규식과 매치되는 모든 문자열(substring)을 반복 가능한 객체로 돌려준다.
+
+p = re.compile('[a-zA-Z]+') # + : 1글자 이상의 모든 것
+p.findall(str1)
+
+# match() : 문자열의 첫 시작부터 정규식과 매치되는지 조사한다.
+# search() : 문자열 전체를 검색하여 정규식과 매치되는지 조사한다.
+# findall() : 정규식과 매치되는 모든 문자열(substring)을 리스트로 돌려준다.
+# finditer() : 정규식과 매치되는 모든 문자열(substring)을 반복 가능한 객체로 돌려준다.
+
+p = re.compile('[a-zA-Z]*') # * : 해당 문자가 있거나, 공백(0개)인 모든 것
+p.findall(str1)
+
+# match() : 문자열의 첫 시작부터 정규식과 매치되는지 조사한다.
+# search() : 문자열 전체를 검색하여 정규식과 매치되는지 조사한다.
+# findall() : 정규식과 매치되는 모든 문자열(substring)을 리스트로 돌려준다.
+# finditer() : 정규식과 매치되는 모든 문자열(substring)을 반복 가능한 객체로 돌려준다.
+
+p = re.compile('[a-zA-Z]?') # * : 해당 문자가 1개이거나, 공백(0개)인 모든 것
+p.findall(str1)
+
+# match() : 문자열의 첫 시작부터 정규식과 매치되는지 조사한다.
+# search() : 문자열 전체를 검색하여 정규식과 매치되는지 조사한다.
+# findall() : 정규식과 매치되는 모든 문자열(substring)을 리스트로 돌려준다.
+# finditer() : 정규식과 매치되는 모든 문자열(substring)을 반복 가능한 객체로 돌려준다.
+
+p = re.compile('[^a-zA-Z]+') # + : 1개 이상 모든 것, ^가 [] 안에 있으면 not
+p.findall(str1)
+
+# match() : 문자열의 첫 시작부터 정규식과 매치되는지 조사한다.
+# search() : 문자열 전체를 검색하여 정규식과 매치되는지 조사한다.
+# findall() : 정규식과 매치되는 모든 문자열(substring)을 리스트로 돌려준다.
+# finditer() : 정규식과 매치되는 모든 문자열(substring)을 반복 가능한 객체로 돌려준다.
+
+p = re.compile('^[a-zA-Z]+') # + : 1개 이상 모든 것, ^가 [] 밖에 있으면 시작하는
+p.findall(str1)
+
+# match() : 문자열의 첫 시작부터 정규식과 매치되는지 조사한다.
+# search() : 문자열 전체를 검색하여 정규식과 매치되는지 조사한다.
+# findall() : 정규식과 매치되는 모든 문자열(substring)을 리스트로 돌려준다.
+# finditer() : 정규식과 매치되는 모든 문자열(substring)을 반복 가능한 객체로 돌려준다.
+
+p = re.compile('happy') #소문자만
+p.findall(string_og)
+
+p = re.compile('happy', re.IGNORECASE) #소문자만
+len(p.findall(string_og))
+
+# happ로 시작하는 모든 단어를 정규식으로 찾아주세요
+p = re.compile('happ[a-zA-Z]+', re.I)
+len(p.findall(string_og))
+
+# match() : 문자열의 첫 시작부터 정규식과 매치되는지 조사한다.
+# search() : 문자열 전체를 검색하여 정규식과 매치되는지 조사한다.
+# findall() : 정규식과 매치되는 모든 문자열(substring)을 리스트로 돌려준다.
+# finditer() : 정규식과 매치되는 모든 문자열(substring)을 반복 가능한 객체로 돌려준다.
+p = re.compile('happ[a-zA-Z]+', re.M)
+p.finditer(string_og)
+
+list(p.finditer(string_og)) # Multiline이 default값, Ignorecase는 off
+
+test_string = '''happy happy dappy happyis HAPPY HaPpy Happy
+happy Happy'''
+
+# 비트연산자가 아니라 리눅스의 파이프라인 역할,
+# 정규식이 리눅스에서 왔기 때문에 신기한 방식으로 여러개 파라미터를 넣는다
+re.findall('^happy\s', test_string, flags=re.IGNORECASE | re.MULTILINE)
+# ~로 시작하는/ ~로 끝나는 경우에는 \n를 한줄로 간주해서 패턴 검색
+
+re.findall('^happy\s', test_string, flags=re.IGNORECASE | re.MULTILINE)
+# ~로 시작하는/ ~로 끝나는 경우에는 \n를 한줄로 간주해서 패턴 검색
+
+a = r'abc\nabc' # 'abc\\nabc' 와 같은 방식으로 간지
+
+# re.sub() - 대체
+# grouping 소괄화()로 정규식 패턴을 분리하고 1부터 순서대로 끊어서 부른다.
+name = '김연지'
+re.sub(r'([가-힣])([가-힣])([가-힣])', r'\1*\3', name)
+
+# # 조건문과 정규식을 사용해서 2글자 이상의 이름이 들어오면
+#  허수 : 허*
+#  김새로이: 김*이
+name = input()
+
+if len(name) == 2:
+    print(name[0]+'*')
+else:
+# re의 grouping patten의 순서는 1부터 시작
+    print(re.sub('([가-힣])([가-힣]+)([가-힣])', r'\1*\3', name))
+
+emails = ['python@mail.example.com', 'python+kr@example.com',              # 올바른 형식
+          'python-dojang@example.co.kr', 'python_10@example.info',         # 올바른 형식
+          'python.dojang@e-xample.com',                                    # 올바른 형식
+          '@example.com', 'python@example', 'python@example-com']          # 잘못된 형식
+
+#이메일 검사기
+emails = ['python@mail.example.com', 'python+kr@example.com',
+          'python-dojang@example.co.kr', 'python_10@example.info',
+          'python.dojang@e-xample.com',
+          '@example.com', 'python@example', 'python@example-com']
+
+for email in emails :
+  ls = email.split('@')
+  if ls[0] != '' and re.findall('[.]', ls[1]) :
+    print(f'{email}은 올바른 형식입니다.')
+  else:
+    print(f'{email}은 잘못된 형식입니다.')
+
+string = '신짱구 010-2222-3333'
+# 010-2233-3333 / 신짱구
+re.sub('(\w+)\s+(\d{3}-\d{4}-\d{4})', r'\2 / \1', string)
+
+string = '신짱구 010-2222-3333'
+# 010-2233-3333 / 신짱구
+re.sub('(\w+)\s+(\d{3}-\d{4}-\d{4})', r'\2 / \1', string)
+
+p = re.compile(r'(?P<name>\w+)\s+(?P<phone>\d{3}-\d{4}-\d{4})')
+# 별명으로 부른다 \g<그룹명>
+print(p.sub('\g<phone> / \g<name>', string))
+
+string = '신짱구 010-2222-3333'
+# 순서대로 부른다(1부터 시작)
+p = re.compile(r'(?P<name>\w+)\s+(?P<phone>\d{3}-\d{4}-\d{4}$)')
+print(p.sub("\g<2> / \g<1>", string))
+
+PI = 3.1471412412532534645754754746234523546754785686976976784365324523
+r = 3
+print(f'파이: {round(PI, 2)}') # {표현내용}에 변수를 입력
+print(f'파이: {PI:.2f}') # {표현내용}에 변수를 입력
+print(f'반지름이 r인 원의 넓이: {r*r*PI:.3f}') # 반지름이 r인 원의 넓이를 소수점 셋째자리까지 출력해주시고
+print(f'반지름이 r인 원의 넓이: {r*r*PI:.0f}') # float이 decimal처럼 출력됩니다(원래 자료형을 거스를 순 없다)
+print(f'반지름이 r인 원의 넓이: {r**2*PI}') # r**2 : r의 거듭제곱
+print(F'36만원: {360000:,}')# 360000원을 세자리수마다 ,로 끊어서 출력해주세요
+
+print(f'{0.1237:.1%}')# 소수점 이하 2번째 자리에서 반올림해서 1번째 자리까지 출력
+
+f'{10:^5d}' #  < 왼쪽정렬, > 오른쪽정렬, ^ 가운데정렬
+
+f'{10:<5d}' #  < 왼쪽정렬, > 오른쪽정렬, ^ 가운데정렬
+
+f'{10:->5d}' # -로 빈자리를 채우고 > 오른쪽 정렬해주세요
+
+PI = 3.1471412412532534645754754746234523546754785686976976784365324523
+r = 3
+print('파이: {}'.format(round(PI, 2)))# {표현내용}에 변수를 입력
+print('파이: {:.2f}'.format(PI)) # {표현내용}에 변수를 입력
+print('반지름이 r인 원의 넓이: {:.3f}'.format(r*r*PI)) # 반지름이 r인 원의 넓이를 소수점 셋째자리까지 출력해주시고
+print('반지름이 r인 원의 넓이: {:.0f}'.format(r*r*PI)) # float이 decimal처럼 출력됩니다(원래 자료형을 거스를 순 없다)
+print('반지름이 r인 원의 넓이: {}'.format(r**2*PI)) # r**2 : r의 거듭제곱
+print('36만원: {:,}'.format(360000))# 360000원을 세자리수마다 ,로 끊어서 출력해주세요
+
+a = '하하하'
+b = 2
+c = 1.724
+'The sum of %s + %d = %f' % (a, c, b) # %d %f (decimal, float)은 호환 가능 근데 지수부를 버리고 들어감
+
