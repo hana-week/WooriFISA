@@ -1,0 +1,87 @@
+li = [1,2,3,4] # list
+type(li)
+
+li.append(2) # 메소드: list라는 클래스를 통해 만들어진 객체에서만 쓸 수 있는 append라는 동작
+
+print(li) # 함수 - 특정 클래스에 구애받지 않고 동일하게 실행되는 것
+
+type(김연지) # __main__.Person
+
+# 객체지향프로그램빙 - 주제 중심으로 속성(변수), 동작(함수)을 묶어서 관리하는 프로그래밍 방식이라면
+
+# 클래스가 설계도
+# 인스턴스가 설계도를 바탕으로 한 집
+
+class Person:
+    name = '이름' # 클래스변수
+    age = 0
+
+    # __init__() 생성자 함수 - 이 클래스를 통해 인스턴스를 생성하는 순간 한 번만 실행됨
+    def __init__(self):
+        self.name = '인스턴스의 이름'
+
+    def introduce1(): # 클래스에서만 작동
+        print('안녕하세요!')
+
+    # 클래스에서 인스턴스를 만들 때 새로 생성되는 메모리주소를 전달 - self
+    def introduce2(self): # self : 인스턴스의 메모리주소에 이 함수, 변수를 물려주세요
+         print(self)
+         print(f'{self.name} 안녕하세요!')
+
+김연지 = Person()
+# 김연지.name = '김연지'
+print(김연지.name)
+김연지.introduce2()
+
+id(김연지.name) # 인스턴스 변수
+id(Person.name) # 클래스 변수
+
+class Car:
+    # 클래스 변수(속성) - 모든 인스턴스가 공유하는 속성에 사용합니다.
+    final_num = 0
+
+   # 인스턴스 변수(속성): name - 차종(str), cc - 배기량(int), is_kor 국산차여부(bool), colors  희망색깔(1,2,3순위, list)을 가집니다.
+    def __init__(self):
+        self.name = '차종'
+        self.cc = 0
+        self.is_kor = None
+        self.colors = [1, 2, 3]
+        self.num = Car.final_num # 지금 생성된 인스턴스의 번호
+        Car.final_num += 1
+
+    # 클래스 함수
+    def print_final_num():
+        print(f'{Car.final_num}개의 차량정보가 있습니다.')
+
+    # 인스턴스 함수
+    def check(self):
+        print('정기검사를 받으셔야 합니다')
+
+# 1개의 차량 인스턴스를 만들어주세요
+morning = Car() # __init__() 함수가 생성될 때만 딱 한번 실행됨
+
+Car.final_num # 클래스 변수
+
+class Car:
+    # 클래스 변수(속성) - 모든 인스턴스가 공유하는 속성에 사용합니다.
+    final_num = 0
+
+   # 인스턴스 변수(속성): name - 차종(str), cc - 배기량(int), is_kor 국산차여부(bool), colors  희망색깔(1,2,3순위, list)을 가집니다.
+    def __init__(self, name, cc):
+        self.name = name
+        self.cc = cc
+        self.is_kor = None
+        self.colors = [1, 2, 3]
+        self.num = Car.final_num # 지금 생성된 인스턴스의 번호
+        Car.final_num += 1
+
+    # 클래스 함수
+    def print_final_num():
+        print(f'{Car.final_num}개의 차량정보가 있습니다.')
+
+    # 인스턴스 함수
+    def check(self):
+        print('정기검사를 받으셔야 합니다')
+
+morning = Car('모닝', 800) # name과 cc는 인스턴스가 생성될 때 무조건 입력받도록
+
