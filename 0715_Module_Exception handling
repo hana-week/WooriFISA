@@ -1,0 +1,408 @@
+!pwd # print working directory
+
+# . 으로 파일 혹은 폴더를 구분합니다.
+import test_library.test2
+
+test_library.test2.final_from_test2('hello')
+
+# . 으로 파일 혹은 폴더를 구분합니다.
+import test_library.test1  # 직접 불러오고
+
+test_library.test1.final_from_test1('hello') # 그 경로를 모두 길게 작성하는 방법
+
+import test_library.test1 as tlt1  # as 별칭을 붙여서 짧은 경로를 만듭니다.
+# import numpy as np
+
+tlt1.final_from_test1('hello') # 별칭.함수명()
+
+from test_library.test1 import * # test_libray 안의 test1 에서 모든 것(*)을 가져오겠음
+
+final_from_test1('hello') # 어디 출신인지 안 쓰고도 해당 함수와 변수를 사용할 수 있게 됩니다.
+PI
+
+%%writefile test_library/test2.py
+
+# 이미 모듈을 불러와놓고 원본을 재수정 - 기본적으로는 다시 불러도 덮어쓸 수 없다
+def final_from_test2(yay):
+    print('test2.py에 있는 함수입니다. - 수정본')
+
+PI = '3.14어쩌구'
+
+from test_library import test2 as new_tlt3 # test_libray 안의 test2 에서 필요한 함수만 가져오겠음
+
+new_tlt3.final_from_test2('hello') # 어디 출신인지 안 쓰고도 해당 함수와 변수를 사용할 수 있게 됩니다.
+
+import copy # 모듈이 어디서 불러와지고 있는지 - 환경 변수 안에 있는 폴더를 순서대로 돌면서 모듈을 읽어온다
+import sys # 시스템과 관련된 모듈
+
+sys.path
+
+import copy
+
+copy.hello() # AttributeError: module 'copy' has no attribute 'hello'
+
+# 모듈을 불러올 때는 모듈별칭명.변수 / 모듈별칭명.함수() 정도로 사용하도록 모듈을 불러와서 써 주세요
+# 아니면 내장 함수들/변수들과 구분이 되지 않아서 내장함수를 덮어쓰게 됩니다.
+# 파일명은 되도록 많이 사용하는 패키지, 모듈 이름과 겹치지 않도록 작성합니다.
+# 왜냐면 sys.path (환경변수)에 등록된 0번 방부터 해당 파일을 찾는데
+# sys.path는 list 형식으로 관리되기 때문에 앞 폴더 안에서 해당 파일을 찾고 나면 뒤 경로는 가지도 않기 때문에.
+
+%%writefile /content/drive/MyDrive/ITStudy/math1.py
+
+# 파이썬 코드, 텍스트파일에 들어갈 내용
+
+def add(x, y):
+    return x+y
+
+def minus(x, y):
+    return x-y
+
+PI = 3.14
+
+# ITStudy 폴더 안에 math1.py를 만드시고 add(x, y), minus(x, y), PI=3.14
+
+# 전체 경로로 불러오기
+import drive.MyDrive.ITStudy.math1
+
+drive.MyDrive.ITStudy.math1.add(2, 4)
+
+# 모듈명 as 별명
+#  별명.함수()
+import drive.MyDrive.ITStudy.math1 as mm
+
+mm.add(2, 4)
+
+# from 라이브러리명 import 모듈명
+# 모듈명.함수
+from drive.MyDrive.ITStudy import math1
+math1.add(2, 4)
+
+# from 라이브러명.모듈명 import 쓰려는함수명만
+# 쓰려는함수명만
+from drive.MyDrive.ITStudy.math1 import add
+add(2, 4)
+
+from drive.MyDrive.ITStudy.math1 import * # math1 모듈 안의 모든 코드를 메모리에 올리겠다
+
+minus(1, 2)
+
+import sys # system 관련된 여러 설정들을 제어해주는 파이썬의 모듈
+
+import numpy as np
+
+npli = np.array([1,2,3,4,5])# numpy.py의 array()라는 함수를 통해 만들어진 객체
+
+[1,2,3,4].join() # AttributeError: 'list' object has no attribute 'join'
+
+# 조건: 0 이상의 정수를 입력받습니다.
+# 조건 만족시 True, 조건을 만족시키지 못하면 '잘못 입력하셨습니다'
+# 여기서 날 수 있는 에러의 종류를 찾아보세요
+import re
+
+def check_num():
+    num = input('0 이상의 정수 출력')
+    pat = re.compile(r'.+[a-zA-Z가-힣.,/ ]+')
+
+    if re.match(pat, num):
+        return print('잘못 입력하셨습니다')
+
+    return print('True')
+
+check_num()
+
+# 조건: 0 이상의 정수를 입력받습니다.
+# 조건 만족시 True, 조건을 만족시키지 못하면 '잘못 입력하셨습니다'
+# 여기서 날 수 있는 에러의 종류를 찾아보세요
+if True: # SyntaxError: incomplete input - 실행도 되기 전에 인터프리터가 내는 에러
+
+# TypeError: '>=' not supported between instances of 'str' and 'int'
+# ValueError: invalid literal for int() with base 10: '가'
+
+try: # 에러가 나는지 감시
+    num = input('0 이상의 정수 입력:')
+
+    if num >= 0:
+        print('참')
+    else:
+        print('다시 입력하세요')
+
+except:
+    print('뭔지 모를 에러 발생')
+
+try: # 에러가 나는지 감시
+    num = input('0 이상의 정수 입력:')
+
+    if int(num) >= 0:
+        print('참')
+    else:
+        print('다시 입력하세요')
+
+# 예외를 여러가지 경우로 나누어서 처리할 때는 하위 예외 > 상위 예외 순으로 처리합니다.
+# 상위예외를 먼저 작성하면 영영 하위 예외는 동작하지 않기 때문입니다.
+
+except ValueError as e:
+    print('에러 발생 - ValueError', e)
+
+except TypeError as e:
+    print('에러 발생 - TypeError', e)
+
+except Exception as e:
+     print('에러 발생 - BaseException', e)
+
+except BaseException as e:
+     print('에러 발생 - BaseException', e)
+
+else:
+    print('try 구문이 성공적으로 에러 없이 완료됐습니다.')
+
+finally:
+    print('try 구문이 성공하든 실패하든 동작합니다.')
+
+try: # 에러가 나는지 감시
+    num = input('0 이상의 정수 입력:')
+
+    if int(num) >= 0:
+        print('참')
+    else:
+        print('다시 입력하세요')
+
+# 예외를 여러가지 경우로 나누어서 처리할 때는 하위 예외 > 상위 예외 순으로 처리합니다.
+# 상위예외를 먼저 작성하면 영영 하위 예외는 동작하지 않기 때문입니다.
+# 예외가 달라도 같은 방식으로 처리하려면 같은 except 구문 내에 ( , )로 구분해서 적어주세요.
+except (ValueError, TypeError) as e:
+    print('에러 발생 - ValueError or TypeError', e)
+
+except Exception as e:
+     print('에러 발생 - BaseException', e)
+
+except BaseException as e:
+     print('에러 발생 - BaseException', e)
+
+else:
+    print('try 구문이 성공적으로 에러 없이 완료됐습니다.')
+
+finally:
+    print('try 구문이 성공하든 실패하든 동작합니다.')
+
+# 조건: 0 이상의 정수를 입력받습니다.
+# 조건 만족시 True, 조건을 만족시키지 못하면 '잘못 입력하셨습니다'
+# 여기서 날 수 있는 에러의 종류를 찾아보세요
+# try ~ except로 이 함수가 실행되면서 날 수 있는 예외를 Syntax Error를 제외하고 모두 처리해보세요
+import re
+
+def check_num():
+    num = input('0 이상의 정수 출력')
+    pat = re.compile(r'[\D]+')
+
+    if re.match(pat, num):
+        return print('잘못 입력하셨습니다')
+
+    return print('True')
+
+check_num()
+
+# 조건: 0 이상의 정수를 입력받습니다.
+# 조건 만족시 True, 조건을 만족시키지 못하면 '잘못 입력하셨습니다'
+# 여기서 날 수 있는 에러의 종류를 찾아보세요
+# try ~ except로 이 함수가 실행되면서 날 수 있는 예외를 Syntax Error를 제외하고 모두 처리해보세요
+import re
+
+def check_num():
+    num = input('0 이상의 정수 출력')
+    pat = re.compile(r'[\D]+')
+
+    if re.match(pat, num):
+        return print('잘못 입력하셨습니다')
+
+    return print('True')
+
+check_num()
+
+# 함수를 실행할 때 예외를 처리해야 하나?
+# 여러군데에서 인자 등 바꿔가면서 재사용한다면 실행하는 부분에 예외를 처리
+import re
+
+def check_num():
+  num = input('0 이상의 정수 출력')
+  pat = re.compile(r'[\D]+')
+
+  if re.match(pat, num):
+    return print('잘못 입력하셨습니다')
+
+  else:
+    return print('True')
+
+
+try:  # 실행할 때 예외를 처리
+  check_num()
+except BaseException as e:
+    print('에러 발생', e)
+
+# 함수를 작성할 때 예외를 처리- 함수를 계속 같은 방식으로 재사용한다면
+def check_num():
+    num = input('0 이상의 정수 출력')
+
+    try:
+        if int(num) > 0:
+            return print('True')
+        else:
+            return print('잘못 입력하셨습니다')
+    except (TypeError, ValueError, ReferenceError, Exception, BaseException) as e:
+
+        return print(f'🚧🚧 에러 발생 🚧🚧\n🚧🚧 {e}')
+
+
+check_num()
+
+# 이 함수에는 처리할 수 있는 예외가 몇개나 존재할까요?
+# 입력: '54321'
+# 출력: 12345
+
+def convert(a):
+    return int(a[::-1])
+
+import traceback # 에러메시지를 출력해주는 모듈입니다
+
+def convert(a):
+    if a.isdigit():
+        return int(a[::-1])
+
+try:
+    print(convert(54321))
+    print(convert('abcd'))
+except:
+    traceback.print_exc()
+
+while True:
+    try:
+        read = input('c:\>')
+        print(read)
+
+    except KeyboardInterrupt:
+        print('실행이 강제종료1 되었습니다')
+        break
+
+    except EOFError: # 예외를 응용하는 사례
+        print('실행이 강제종료 되었습니다')
+        break
+
+while True:
+    # try:
+        read = input('c:\>')
+        if read != 'x':
+            print(read)
+        else:
+            raise EOFError # raise 명령어로 강제로 에러를 발생시킬 수 있습니다.
+
+
+    # except KeyboardInterrupt:
+    #     print('실행이 강제종료1 되었습니다')
+    #     break
+
+    # except EOFError: # 예외를 응용하는 사례
+    #     print('실행이 강제종료 되었습니다')
+    #     break
+
+ZeroDivisionError.mro()
+# [ZeroDivisionError, ArithmeticError, Exception, BaseException, object]
+
+import traceback
+
+try: # 동작할 부분을 신경써서 보라고 인터프리터한테 표시해줍니다.
+    for a, b in enumerate(zip(alist, blist)): print(b[a])
+except IndexError as e:
+    print('없는 방 번호를 호출했군요', e)
+    print(traceback.format_exc())
+except BaseException as e:
+    print('그 외의 상황이 생겼군요', e)
+
+# 파일을 읽고 쓰는 방법 2가지
+# 방법1.
+# with open(파일명, 모드) as 파일을 가리키는 약어:
+#    print(뭘 쓰려는지, file=약어)
+# - with문이 끝나면 자동으로 파일이 닫힘
+with open('testex.txt', 'w') as f: # append 의 앞글자
+    f.write('안녕하세요\n')
+    f.write('두번째 줄 입니다\n')
+
+# 방법 2
+# 1. 파일을 만들어야 합니다
+# 2. 파일을 열어야 합니다
+# 3. 사용할 방법(모드)을 지정해야 합니다 (r, w, a)
+f2 = open('testex2.txt', 'w')
+f2.write('안녕하세요\n')
+f2.write('두번째 줄 입니다\n')
+
+# 4. 파일을 닫습니다.
+f2.close()
+
+with open('testex.txt', 'a') as f: # append 의 앞글자
+    f.write('안녕하세요\n')
+    f.write('두번째 줄 입니다\n')
+
+with open('testex.txt', 'r') as r: # read 의 앞글자
+    # print(r.read()) # 한번에 string으로 객체를 가져옵니다
+    # print(r.readable()) 값이 있으면 True, 빈 문자열이거나 없으면 False
+    # r.readline() # 한줄씩 \n 단위로 텍스트 데이터를 꺼내옵니다.
+    while True:
+        t = r.readline()
+        if not t:
+            break
+        print(t, end='') # 한줄씩 \n 단위로 텍스트 데이터를 꺼내옵니다.
+
+with open('testex.txt', 'r') as r: # read 의 앞글자
+    # print(r.read()) # 한번에 string으로 객체를 가져옵니다
+    # print(r.readable()) 값이 있으면 True, 빈 문자열이거나 없으면 False
+    # r.readline() # 한줄씩 \n 단위로 텍스트 데이터를 꺼내옵니다.
+    # r.readlines() # 전체 데이터를 \n 단위로 끊어서 리스트로 출력합니다.
+    for r in r.readlines():
+        print(r, end='') # 전체 데이터를 \n 단위로 끊어서 리스트로 출력합니다.
+
+# 파일이 있으면 그 파일의 내용을 모두 출력
+# 파일이 없으면 새로운 파일을 작성해서 '새 파일'
+# 파일을 다 쓰고 나서 close()로 닫아주기
+try:
+    f = open('testex.txt', 'r')
+
+except FileNotFoundError:
+    print('해당하는 파일이 없습니다. 새 파일을 생성합니다.')
+    f = open('testex.txt', 'w')
+    f.write('새 파일입니다.')
+
+except:
+    print('그 외의 문제가 발생했습니다.')
+
+else:
+    #파일이 존재할 경우 파일 내용 모두 출력
+    texts = f.readlines()
+    for text in texts:
+        print(text)
+
+finally:
+    f.close()
+    print('파일을 닫았습니다.')
+
+# 양수로만 값을 받아서 나누고 싶은데 자꾸 음수 넣는 사람이 있어요
+# 음수일 때는 에러 -> except로 넘겨버리는 거에요
+
+# 새로 에러를 만들고 싶을 때는 해당 클래스를 만들어줘야 합니다.
+class NegativeDivisionError(Exception):
+    def __init__(self, value):
+        self.value = value
+
+def PositiveDivide(a, b):
+    if (b<0):
+        raise NegativeDivisionError(b) # 사용자가 임의로 에러를 만들어서 에러의 클래스까지 따로 만들어서 처리
+    return a / b
+
+try:
+    ex = PositiveDivide(3,-11)
+except ZeroDivisionError as e:
+        print( e, 'ZeroDivisionError' )
+except NegativeDivisionError as e: # NegativeDivisionError: -11
+        print( e, 'NegativeDivisionError' )
+except Exception as e:
+    print( e, 'Exception' )
+
+
+
