@@ -22,7 +22,8 @@ class Plain:
         # 적립금 계산
         points = total_price * self.points_rate
         # 결과 문자열 생성
-        result = f"{quantity}개의 {product.name}(을)를 구매하셨습니다. 총 금액: {total_price:.2f}원, 적립금: {points:.2f}원"
+        result = f"{quantity}개의 {product.name}(을)를 구매하셨습니다.\
+        총 금액: {total_price:.2f}원, 적립금: {points:.2f}원"
         # 추가 혜택 적용
         result = self.apply_additional_benefits(product, quantity, total_price, points, result)
         return result
