@@ -1,0 +1,120 @@
+# !pip install numpy # 넘파이 설치
+
+# [i에 적용할 수식 for i in range(방의개수)]
+
+[tes + 5 for tes in  test]
+
+import numpy as np # np는 numpy를 의미하는 게 약속처럼 되어있습니다.
+# from numpy import * -> 이 경우 파이썬의 기본 내장함수와 겹치는 이름들을 numpy가 덮어쓰기 때문에 권장하지는 않습니다
+
+# ndarray - numpy가 제공하는 특수 자료타입
+test = np.array([15, 20, 25, 30])
+
+test2 = np.array(['15', 20, '25', True]) # 넘파이의 배열에는 모두 같은 자료형인 원소를 넣습니다.
+# 그렇지 않다면 자신이 모두 포함할 수 있는 같은 자료형으로 변경해줍니다.
+
+np.array(list(range(0, 10, 0.1))) # list를 ndarray로 형변환
+# 파이썬의 기본 range는 정수 배열만 만듭니다.
+# TypeError: 'float' object cannot be interpreted as an integer
+
+# np.arange - ndarray 수열을 만들어주는 메소드 - step이 정수가 아니어도 가능
+test1 = np.arange(15, 31, 0.01) # 시작점, 끝+1, 스텝, r이 1개!!
+test1
+
+import numpy as np
+
+ndarray2 = np.array([[1, 2, 3, 4], [5, 6, 7, 8]], dtype='int8') # 8bit의 int를 넣는 메모리공간을 하나의 원소 방으로 넣겠다
+ndarray2 # -127 ~ 127 / 0
+
+test.itemsize # 방 하나(요소 한 개)의 바이트
+ndarray2.ndim # 차원
+ndarray2.shape # 구조    (2, 4) (행, 열)
+ndarray2.size # 요소의 개수
+ndarray2.T # transpose
+
+np.append(ndarray2, 9)  # 데이터 관련 패키지, 무엇보다 원본 보존하는게 우선이기 때문에
+# 일반 파이썬과 달리 append 함수가 원본을 파괴하지 않고 결과를 리턴하도록 구현되어 있습니다.
+
+ndarray2 = ndarray2 - 5 # __add__   : 내부적으로 map(lambda x: x+5))
+np.append(ndarray2, [[9, 10, 11, 12]], axis=0)  # axis=0 가로축(행) / axis=1 세로축(열)
+
+# 파이썬의 내장함수 append는 리스트를 파괴하고 요청한 원소를 추가하는 파괴적 함수였습니다
+# 91년도 속도 때문에 10만개 데이터가 들어간 원본을 2개 복사할 수 없으니까 파괴적 함수로 리스트 관련 메소드들이 구현됐다
+# 데이터 관련 패키지에서는 대부분 위와 같은 메소드들도 비파괴적으로 구현이 된다 - 원본만큼 중요한 게 없으니까 사실....
+
+np.sum(ndarray2, axis=1) # axis 로 행 또는 열 선택 가능
+testTotal = sum(ndarray3)  # 파이썬의 내장함수 sum()과 ndarray는 호환이 되는구나
+
+np.mean(ndarray3)
+# 클래스.함수(목적어)
+# 주어.동사(목적어)
+
+type(good_example[-1][-1])
+# np.nan 은 - 파이썬의 None과 같은 넘파이만의 '값없음'을 의미하는 데이터
+# None이 아닌 이유 - 행렬의 자료형이 일치해야 broadcasting이 가능하기 때문에 float으로 내부적으로 구성되어있음.
+
+wrong_example2 = good_example / 0 # np.inf  infinite을 의미합니다.  float으로 되어있는 이유는 broadcasting
+
+np.nan_to_num(good_example, nan)  # np.nan을 특정 숫자로 채워넣고 싶을 때
+
+np.array(b, 'int') # 실수 -> 정수 ndarray로 형변환하겠습니다. 소수점이하를 버리는 데이터 손실이 일어납니다.
+
+c = [0.3, '1.3', 4.5, 2]
+np.array(c) # str으로 된 자료가 섞여있으면 나머지도 str으로 형변환됩니다.
+
+c = [0.3, '1.3', 4.5, 2]
+np.array(c, 'float') # float으로 형변환 명시
+
+np.array(b, 'int') # 소수점 이하 부분 버림
+c # 실수 -> 정수 형변환 : 데이터 손실이 일어나므로 주의하셔야 합니다
+
+c - 3 # 양의 정수를 넘어서는 범위에서 이상한 값이 출력됩니다
+# 양의 정수만 필요하고 데이터를 아껴야 하는 나이/물건의개수/이미지RGB값/반복횟수 같은 경우
+
+# 똑같은 결과를 보기 위한 랜덤함수의 seed 가장 최초값을 지정 가능
+ # 초기값을 동일하게 지정해서 난수를 생성해서 난수의 결과가 같이 작업하는 사람 / 동일 모델에서 같은 결과가 나오도록
+np.random.seed(42) # 같은 코드셀 내에서만 seed 삼는다
+np.random.choice(a, 4, replace=False) # 비복원
+
+np.random.rand()  # 0.28093450968738076  - 0~1 사이에 균등분포의 확률로 값 1개를 뽑아낸다
+np.random.randn() # 0~1 사이에 정규(normal) 분포의 확률로 값을 뽑아냅니다.
+np.random.randint(-5, 5) # low, high 사이의 균등분포에 따라서 int 값 하나를 뽑아냅니다.
+
+np.average(a, weights=[2, 1, 1, 0, 0]) # 가중평균
+# 시계열데이터에서 최근 n일의 가격을 조금 더 크게 반영할 때
+np.median(a) # 중앙값
+
+import statistics as st
+st.mode(b)
+
+# np.mode(b) # 넘파이에는 최빈값을 계산하는 함수는 없습니다.
+
+x.sort() #  x.sort()는 원본을 파괴해버립니다.
+np.sort(x) # np.sort(x)는 원본은 두고 결과를 우리에게 리턴합니다.
+sorted(x) # 파이썬의 sorted 함수는 list로 결과를 리턴합니다.
+
+# np.where(조건, True일 때 출력값, False 출력값)
+np.where(x > 3, 3, 0)
+
+# 특정 조건을 ndarray 안의 모든 원소가 만족하면 True, False
+np.all(x > 0)
+
+np.isfinite(x2) # nan과 inf을 모두 False 처리
+
+b.reshape(2, 4) # reshape 함수를 쓸 때는 배열의 개수에 맞게 재구조화를 해줘야 합니다.
+
+a1[(15 < a1) & (a1 < 30)] # 15보다 크고 30보다 작은 값들만 확인하고 싶어요
+a1[~(15 < a1)]  # not [] 안에서는 and or not 대신 & | not
+
+import numpy as np
+
+c = np.array([10, 11, 12, 13, 14, 15])
+np.insert(c, 2, 10) # 원본, 넣을 위치, 넣을 값
+# np.insert 함수는 새로운 값을 삽입하지만 - 원본을 변경하는 게 아니라 새로운 배열을 새로운 메모리공간에 만드는 작업이다.
+# 빠르게 동작하기 위해 순서대로 값을 메모리 공간에 저장하기 때문에
+
+# .npy 라는 바이너리 파일로 연산한 데이터를 저장할 수 있습니다.
+np.save('a.npy', d)
+
+# 불러올 때는
+y = np.load('a.npy')
