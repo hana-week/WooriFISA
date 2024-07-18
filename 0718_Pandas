@@ -1,0 +1,225 @@
+type(df) # DataFrame
+
+type(df.Age) # Series
+
+df['나이']['둘'] # 2행 나이를 출력해보세요.  numpy 행 -> 열  pandas 열 -> 행
+
+df1 = pd.DataFrame(data, columns = ['Age'], index = ['하나', '둘', '셋'])
+df1 # 인스턴스 생성 columns=원본에서 가져올 컬럼의 이름, index는 가져올 행에 붙일 별명
+# columns : 어느 열을 취할 것인가, index: 어떤 이름을 '부여'할 것인가
+
+df.나이['둘'] = 38
+df # 우리는 열, 행 순서로 pandas를 조작했지만 속에서는 numpy로 돌아가고 있다
+
+# CRUD / Create / Read / Update / Delete
+
+import numpy as np
+import pandas as pd
+
+data = pd.DataFrame(data)
+data # 익명처리된 정보
+
+data.to_dict() # dict로 변환해서
+df2 = pd.concat((data, data) ) # concatenate
+
+pd.concat((data, df_og), join='inner') # 교집합 - 컬럼기준으로 중복되지 않는 값들만
+
+df3.drop_duplicates() # 중복되는 행을 걸러내고 1개씩만 행이 남아있는 것
+# concat - 단순히 겹치거나(inner), 겹치지 않는(outer) '컬럼' 단위로 합치는 명령어
+
+# merge  중복을 on 기준으로 알아서 걸러서, 접미사도 부여해서
+pd.merge(df5, df5)
+# 자료를 변수에 할당하기
+data0 = {'Name' : ['S1', 'S2', 'S3'],
+         'Age' : [25, 28, 22],
+         'Score' : [95, 85, 75]} # 출석부
+
+data1 = {'Sex' : ['Male', 'Female', 'Male'],
+         'Age' : [25, 28, 22],
+         'Score' : [95, 85, 75]} # 학생 기본 정보
+
+# df[컬럼명][행이름] - 직접 접근
+# df.loc[행, 열]
+# df.iloc[행, 열]  - 넘파이 접근법으로 (index position)
+data0['Age'][1]
+
+data0.loc[1, 'Age'] # 판다스의 방식으로 부르되, 넘파이의 방식으로 접근 가능(행)
+data0.iloc[1, 1]  # 판다스의 속에서 동작하는 넘파이 방식으로 접근
+# 25	95
+# 28	85
+data0.iloc[0:2, 1:3] # 행, 열 # 슬라이싱 [시작점:끝점+1:스텝]
+data0.loc[:2, 'Age':'Score'] # loc 명령어는 딱 그 자리의 인덱스, 딱 그자리의 컬럼명을 지정해주셔야 합니다.
+
+df5 = df5.loc[:, ['Name', 'Sex', 'Age', 'Score']]
+ # 인덱싱으로 원하는 배열을 만들어서 순서를 바꿔서 일부를 사용할 수도 있습니다.
+
+data0.sort_values('Age', inplace=True, ascending=False) # 특정 기준으로 전체 DF를 재정렬
+# inplace=True 지금 결과를 원본에 재위치시키겠다
+
+data0.sort_values(['Name', 'Age']) # 정렬의 우선순위 -  1차로 Name 순, 2차 Age
+
+data2 # data0, data2의 중복되는 열은 빼고 없는 열만 합쳐주시고
+# 행이름을 ['row1', 'row2', 'row3'] 로 바꿔주세요.
+
+# pd.merge(data0, data2)
+data2 = data0.merge(data2) # inplace=True
+data2.index = ['row1', 'row2', 'row3']
+data2
+
+# df_jjang이라는 데이터프레임으로 만들어주세요
+# 나이가 22살 초과인 사람의 데이터만 출력해주세요
+df_jjang = pd.DataFrame(data)
+df_jjang[df_jjang.Age > 22]
+
+df_jjang.loc[df_jjang.Age > 22] # 우리가 적어놓은 건 열에 관한 정보지만  행을 T/F 추린 결과라서
+
+df_jjang.describe() # 수치 데이터의 간단한 통계량을 출력해줍니다.
+df_jjang.describe(include='all')  # 모든 열에 대한 통계값
+
+df_jjang.head() # 맨 앞에 5개
+
+# & | ~
+# 반이 중복되지 않는 모든 사람 출력
+df_jjang[df_jjang.Class.duplicated() ] # 중복되는 경우를 출력하고 있음
+
+df_jjang[~df_jjang.Class.duplicated() ]  # ~(틸드) : not
+
+# 실습1. 시험점수(Score)가 80점 이상인 사람들의 Result항목에 Pass를 기입하여 출력하세요.
+# 실습2. 시험점수(Score)가 80점 미만인 사람들의 Result항목에 Fail을 기입하여 출력하세요.
+
+# np.where로 True, False 에 다른 값 기입
+df_jjang['Result'] = np.where(df_jjang['Score'] >= 80, 'Pass', 'Fail')
+df_jjang.head()
+
+# lambda와 삼항연산자 사용
+df['Result'] = list(map(lambda x : 'Pass' if x>= 80 else 'Fail', df.Score))
+df
+
+# DF.apply()
+df['Result'] =  df.Score.apply(lambda x : 'Pass' if x>= 80 else 'Fail')
+df
+
+# replace
+df = df_jjang_og.copy()
+
+# 80점 이상 90점 미만인 사람들의 전체 데이터를 출력
+df_jjang[(80 <= df_jjang.Score)  & (df_jjang.Score < 90) ]
+
+df_jjang.to_excel('jjanggu.xlsx') # 쓰기
+
+new_jjanggu = pd.read_excel('jjanggu.xlsx', index_col=0) # 0번 열을 인덱스로 쓰겠음
+new_jjanggu
+
+df_jjang.to_excel('new_jjanggu.xlsx', index=False) # 인덱스번호는 없이 파일 저장
+
+# 애초에 export 할 때 index를 생략해서 보내주는 방법
+df_jjang.to_excel('new_jjanggu.xlsx', index=False) # 인덱스번호는 없이 파일 저장
+
+# import 할 때 애초에 index는 첫번째열을 사용해서 불러오는 방법
+new_jjanggu = pd.read_excel('jjanggu.xlsx', index_col=0) # 0번 열을 인덱스로 쓰겠음
+new_jjanggu
+
+# /content/drive/MyDrive/2024FocusOn/우리FISA_AI엔지니어링_3기/data/jjangu_list2.csv
+
+# comma saperated value
+jjangu_list = pd.read_csv('/content/drive/MyDrive/2024FocusOn/우리FISA_AI엔지니어링_3기/data/jjangu_list2.csv', \
+                          index_col=0)
+jjangu_list
+
+# df.groupby("묶음의 기준이 되는 컬럼명")["적용받는 컬럼"].적용받는 연산()
+# 반별로 몇명의 학생이 있는지 df 출력해주세요.
+jjangu_list.groupby('반')['이름'].count() # Series
+
+# 반별로 테스트점수의 평균이 얼마인지  출력해주세요.
+# df.groupby("묶음의 기준이 되는 컬럼명")["적용받는 컬럼"].적용받는 연산()
+jjangu_list.groupby('반')[['테스트점수']].mean()
+
+# df.groupby("묶음의 기준이 되는 컬럼명")["적용받는 컬럼"].적용받는 연산()
+jjangu_list.groupby('반')[['담당', '테스트점수']].mean() # 숫자자료형에 적용되는 연산
+
+
+jjangu_list.groupby(['반', '이름'])[['테스트점수']].mean() # 숫자자료형에 적용되는 연산
+
+jjangu_list.info() # 1   등록일자    8 non-null      object
+
+# 판다스의 날짜 관련 자료형 datetime
+jjangu_list.등록일자 = pd.to_datetime(jjangu_list.등록일자)
+
+from datetime import datetime, timedelta # 또다른 모듈
+
+# 파이썬에서 시간관련 연산을 책임지는 특수자료형
+# jjangu_list를 변경
+jjangu_list.등록일자 = jjangu_list.등록일자 + timedelta(days=365)   # 365일을 더해서 어떤 결과가 나오는지
+
+jjangu_list[jjangu_list.등록일자 > '2023-03-13'] # pandas df에서 시간을 관리하는 단위 datetime이라는 자료형 있다
+# 자료형을 변경해주는 게 필요하다. 시리즈.to_datetime 으로 형변환
+# + timedelta() 함수 안에 변하는 시간을 적어서 연산해 줄 수 있다.
+
+jjangu_list.등록일자.astype(str) # 구조는 그대로 남겨놓되 브로드캐스팅으로 각 원소에 동일한 자료형 적용
+
+# group by / melt 를 사용해서 최대한 마트별 상품 가격을 알아보기 쉽게 위 데이터를 재구조화해주세요.
+
+df.sort_values(by=["product", "price"]).drop(columns=["quantity"])
+
+df.drop(columns=["quantity"]).groupby(by=["store"]).mean(numeric_only=True) # numeric_only=True 하면 숫자자료형을 위한 연산 외의 것은 예외처리
+
+#1.단가 기준 가장 저렴한 매장
+min_price_per_product = df.groupby('product').apply(lambda x: x.loc[x['price'].idxmin()]).reset_index(drop=True)
+min_price_per_product = min_price_per_product[['product', 'price', 'store']]
+min_price_per_product.columns = ['product', 'min_price', 'store']
+
+print(min_price_per_product)
+
+
+#2.최대치 구매 기준 가장 저렴한 매장
+df['total_price'] = df['price']*df['quantity'] #전체 재고를 모두 구매했을 때 가격
+
+total_min_price_per_product = df.groupby('product').apply(lambda x: x.loc[x['total_price'].idxmin()]).reset_index(drop=True)
+total_min_price_per_product = total_min_price_per_product[['product', 'total_price', 'store']]
+total_min_price_per_product.columns = ['product', 'total_min_price', 'store']
+
+print(total_min_price_per_product)
+
+
+
+#3.한 매장만 방문했을 때 가장 저렴하게 제품을 살 수 있는 매장
+#한 매장에서 cucumber, onion, potato 모두 전체 구매
+
+print(df.groupby('store')[['total_price']].sum()) #한번에 살거면 이마트 가는게 이득임
+
+df_multi.unstack() # index가 풀려서 column으로 정렬됨
+
+# stack -> 컬럼을 인덱스로 변환합니다.
+df_multi.stack()
+
+# 장미반에서 75점 이상 맞은 사람만 찾아주세요 & ~ |, 다중조건 (조건1) 부호 (조건2)
+jjanggu_list[(jjanggu_list.테스트점수 >= 75) & (jjanggu_list.반 == '장미')]
+
+# 점수가 75점 이상 맞은 사람 중에 장미나 개나리반 사람을 검색해주세요
+jjanggu_list[(jjanggu_list.테스트점수 >= 75) & ((jjanggu_list.반 == '장미') |(jjanggu_list.반 == '개나리'))  ]
+
+# 점수가 75점 이상 맞은 사람 중에 장미나 개나리반이 아닌 사람을 검색해주세요 ~
+jjanggu_list[(jjanggu_list.테스트점수 >= 75) & ~((jjanggu_list.반 == '장미') |(jjanggu_list.반 == '개나리'))  ]
+
+jjangu_list.info() # ('9', '짱구엄마2', 	'2023-03-15',	'85', 	'채성아', '개나리')
+
+jjangu_list.loc[8] = ('짱구엄마2', 	'2023-03-15',	'85', 	'채성아', '개나리') # 열, 행
+
+jjangu_list.loc[12] = ('2023-03-15',	'85', 	'채성아', '개나리') # 열, 행
+# IndexError: iloc cannot enlarge its target object
+# ValueError: cannot set a row with mismatched columns 행 단위로 값을 넣을 때는 컬럼의 개수를 맞춰줘야 동작합니다.
+
+del jjangu_list['이름'][2] # del로 특정 원소는 삭제할 수 없습니다. 구조가 무너져서.
+
+# 원하는 문자열을 찾아야 하는 경우가 생깁니다
+# 값 자체에서 찾거나, 컬럼/인덱스에서 찾거나
+
+# filter - 컬럼명에서 원하는 문자/문자열을 쉽게 검색할 수 있습니다
+# isin - 데이터에서 원하는 문자/문자열을 쉽게 검색할 수 있습니다
+
+# dataframe
+data = {'country': ['Belgium', 'France', 'Germany', 'Netherlands', 'United Kingdom'],
+        'population': [11.3, 64.3, 81.3, 16.9, 64.9],
+        'area': [30510, 671308, 357050, 41526, 244820],
+        'capital': ['Brussels', 'Paris', 'Berlin', 'Amsterdam', 'London']}
+
