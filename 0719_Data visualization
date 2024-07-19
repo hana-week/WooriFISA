@@ -1,1 +1,298 @@
+# 코랩에서 한글 폰트 깨지는 현상 해결을 위해 한국어 폰트들을 설치합니다
+!sudo apt-get install -y fonts-nanum # 매직메소드
+!sudo fc-cache -fv
+!rm ~/.cache/matplotlib -rf
+# 이후 런타임 재시작해주세요
+
+# %matplotlib inline  # 버전이 낮은 노트북에서 그래프가 바로 뜨지 않을 때 사용 % 쉘메소드
+
+import matplotlib as mpl  # 기본 설정 만지는 용도
+import matplotlib.pyplot as plt  # 그래프 그리는 용도
+import matplotlib.font_manager as fm # 폰트 관련 용도
+
+# 현재 설치된 폰트 확인해보기
+sys_font=fm.findSystemFonts()
+print(f"sys_font number: {len(sys_font)}")
+print(sys_font)
+
+nanum_font = [f for f in sys_font if 'Nanum' in f]
+print(f"nanum_font number: {len(nanum_font)}")
+
+# 한글 폰트 설정
+plt.rc('font', family='NanumGothic')
+# - 기호 깨짐 현상 방지를 위한 설정
+plt.rc('axes', unicode_minus=False)
+
+# 1) 도화지를 그린다
+plt.figure() # 도화지
+
+# 2) 축을 얹습니다.
+plt.axes()
+
+plt.plot(np.random.randn(30).cumsum())
+plt.plot(np.random.randn(30).cumsum(), 'g-.x')
+plt.plot(np.random.randn(30).cumsum(), 'b--^')
+plt.show() # 위 내용까지만 하나의 도화지를 공유
+
+plt.plot(np.random.randn(30).cumsum())
+plt.plot(np.random.randn(30).cumsum(), 'g-.x')
+plt.plot(np.random.randn(30).cumsum(), 'b--^')
+plt.show() # 위 내용까지만 하나의 도화지를 공유
+
+plt.plot(np.random.randn(30).cumsum(), 'g-.x', label='2022년')
+plt.plot(np.random.randn(30).cumsum(), 'b--^', label='2023년')
+plt.title('연도별 분기별 매출 차이') # 제목
+plt.xlabel('분기') # x축 제목
+plt.ylabel('매출(단위: 억원)') # y축 제목
+plt.axis('equal') # 시각화된 그래프를 중앙에 그릴 때
+plt.legend() # 범례
+
+plt.plot(np.random.randn(30).cumsum(), 'g-.x', label='2022년')
+plt.plot(np.random.randn(30).cumsum(), 'b--^', label='2023년')
+plt.plot(np.random.randn(30).cumsum(), 'b--^', label='2023년')
+plt.plot(np.random.randn(30).cumsum(), 'b--^', label='2023년')
+plt.plot(np.random.randn(30).cumsum(), 'b--^', label='2023년')
+plt.title('연도별 분기별 매출 차이') # 제목
+plt.xlabel('분기') # x축 제목
+plt.ylabel('매출(단위: 억원)') # y축 제목
+plt.axis('equal') # 시각화된 그래프를 중앙에 그릴 때
+plt.legend(loc='upper right', frameon=False) # 범례 loc=범례 위치 고정, frameon=False 범례 뒤 음영 제거
+
+# 계속 쓰고 싶은 폰트 규격이 있을 때
+# 파리미터 = 아규먼트   **kwags
+font1 = {'family': 'NanumSquareRound', 'size':20, 'color':'red'}
+font2 = {'family': 'NanumMyeongjo', 'size':14, 'color':'green'}
+
+plt.plot(np.random.randn(30).cumsum(), 'g-.x', label='2022년')
+plt.plot(np.random.randn(30).cumsum(), 'b--^', label='2023년')
+
+plt.title('연도별 분기별 매출 차이', fontdict=font1) # 제목
+plt.xlabel('분기', family='NanumMyeongjo', size=14, color='blue', rotation=130, weight='bold') # x축 제목
+plt.ylabel('매출(단위: 억원)', fontdict=font2) # y축 제목
+plt.axis('equal') # 시각화된 그래프를 중앙에 그릴 때
+plt.legend(loc='upper right', frameon=False) # 범례 loc=범례 위치 고정, frameon=False 범례 뒤 음영 제거
+
+import matplotlib.pyplot as plt
+
+# Look at index 4 and 6, which demonstrate overlapping cases.
+x1 = [1, 3, 4, 5, 6, 7, 9]
+y1 = [4, 7, 2, 4, 7, 8, 3]
+
+x2 = [2, 4, 6, 8, 10]
+y2 = [5, 6, 2, 6, 2]
+
+# Colors: https://matplotlib.org/api/colors_api.html
+
+# 범주형 데이터 - 개수(전체 중의 비율)
+plt.bar(x1, y1, label="Blue Bar", color='b')
+plt.bar(x2, y2, label="Green Bar", color='g')
+plt.plot()
+
+plt.xlabel("bar number")
+plt.ylabel("bar height")
+plt.title("Bar Chart Example")
+plt.legend()
+plt.show()
+
+# 연속형 데이터를 특정 구간으로 나눠서 그 범위에 해당하는 데이터의 빈도수를 막대형태로 표시한 그래프
+# 양적 변수 - 데이터의 중심 경향 / 변동성 / 이상치 등을 쉽게 시각적으로 판단할 수 있다
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Use numpy to generate a bunch of random data in a bell curve around 5.
+n = 5 + np.random.randn(1000)
+
+m = [m for m in range(len(n))]
+plt.bar(m, n)
+plt.title("Raw Data")
+plt.show()
+
+plt.hist(n, bins=20) # bins 히스토그램의 구간
+plt.title("Histogram")
+plt.show()
+
+plt.hist(n, cumulative=True, bins=20) # cumulative - 누적그래프
+plt.title("Cumulative Histogram")
+plt.show()
+
+import matplotlib.pyplot as plt
+# 연속형 변수와 연속형 변수의 관계성 파악하기 위해
+x1 = [2, 3, 4]
+y1 = [5, 5, 5]
+
+x2 = [1, 2, 3, 4, 5]
+y2 = [2, 3, 2, 3, 4]
+y3 = [6, 8, 7, 8, 7]
+
+# Markers: https://matplotlib.org/api/markers_api.html
+
+plt.scatter(x1, y1)
+plt.scatter(x2, y2, marker='v', color='r')
+plt.scatter(x2, y3, marker='^', color='m')
+plt.title('Scatter Plot Example')
+plt.show()
+
+# 양적 변수를 여러개의 시점에서 흐름을 파악
+import matplotlib.pyplot as plt
+
+idxes = [ 1,  2,  3,  4,  5,  6,  7,  8,  9]
+arr1  = [23, 40, 28, 43,  8, 44, 43, 18, 17]
+arr2  = [17, 30, 22, 14, 17, 17, 29, 22, 30]
+arr3  = [15, 31, 18, 22, 18, 19, 13, 32, 39]
+
+# Adding legend for stack plots is tricky.
+plt.plot([], [], color='r', label = 'D 1')
+plt.plot([], [], color='g', label = 'D 2')
+plt.plot([], [], color='b', label = 'D 3')
+
+plt.stackplot(idxes, arr1, arr2, arr3, colors= ['r', 'g', 'b'])
+plt.title('Stack Plot Example')
+plt.legend()
+plt.show()
+
+import matplotlib.pyplot as plt
+
+labels = 'S1', 'S2', 'S3'
+sections = [56, 66, 24]
+colors = ['c', 'g', 'y']
+
+plt.pie(sections, labels=labels, colors=colors,
+        startangle=0,
+        explode = (0, 0.1, 0), # 틈새
+        autopct = '%1.2f%%' # autopercent - 소수점 둘째짜리까지 비율을 계산해 출력해다오
+        )
+
+plt.axis('equal') # Try commenting this out.
+plt.title('Pie Chart Example')
+plt.show()
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+ys = 200 + np.random.randn(100)
+x = [x for x in range(len(ys))]
+
+plt.plot(x, ys, '-')
+plt.fill_between(x, ys, 195, where=(ys > 195),facecolor='g', alpha=0.6) # 195, where=(ys > 195) : xlim(195, ~ )와 같은 명령어
+
+plt.title("Fills and Alpha Example")
+plt.show()
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+def random_plots():
+  xs = []
+  ys = []
+
+  for i in range(20):
+    x = i
+    y = np.random.randint(10)
+
+    xs.append(x)
+    ys.append(y)
+
+  return xs, ys
+
+fig = plt.figure()
+# 전체 5, 2의 그리드에서 0, 0부터 시작해서 row 1, col 2 사용
+ax1 = plt.subplot2grid((5, 2), (0, 0), rowspan=1, colspan=2)
+ax2 = plt.subplot2grid((5, 2), (1, 0), rowspan=3, colspan=2)
+ax3 = plt.subplot2grid((5, 2), (4, 0), rowspan=1, colspan=1)
+ax4 = plt.subplot2grid((5, 2), (4, 1), rowspan=1, colspan=1)
+
+x, y = random_plots()
+ax1.plot(x, y)
+
+x, y = random_plots()
+ax2.plot(x, y)
+
+x, y = random_plots()
+ax3.plot(x, y)
+
+x, y = random_plots()
+ax4.plot(x, y)
+
+plt.tight_layout()
+plt.show()
+
+import matplotlib.pyplot as plt  # 그래프 그리는 용도
+import matplotlib.font_manager as fm  # 폰트 관련 용도
+import seaborn as sns
+%matplotlib inline
+
+# 현재 설치된 폰트 확인해보기
+sys_font=fm.findSystemFonts()
+print(f"sys_font number: {len(sys_font)}")
+print(sys_font)
+
+nanum_font = [f for f in sys_font if 'Nanum' in f]
+print(f"nanum_font number: {len(nanum_font)}")
+
+# 한글 폰트 설정
+plt.rc('font', family='NanumGothic')
+# - 기호 깨짐 현상 방지를 위한 설정
+plt.rc('axes', unicode_minus=False)
+
+# df['dataset'] 가  I ['I', 'II', 'III', 'IV'] df1, df2, df3, df4 에 각각 저장해주세요
+# info, describe 등등 확인도 해주세요
+
+sns.lmplot(data=df, x='x', y='y', hue='dataset', col='dataset', col_wrap=2,
+           palette='dark', ci=None) # hue 고유값을 구분해서 색 입히고, 범례
+
+# 일단 하나 보고 직접 그리기 시작합니다
+sns.set_theme(style="ticks")
+plt.figure(figsize=(20, 20))   # 그래프 크기
+sns.lmplot(x="x", y="y", col="dataset", hue="dataset", data=df,  # hue : 컬럼명 기준으로 데이터 색깔 구분해줌
+           col_wrap=2, ci=None, palette="muted", height=4, # col_wrap : 한 줄에 몇개의 그래프를 그릴지, palette: 색상 컨셉 지정
+           scatter_kws={"s": 100, "alpha": 0.7}); # scatter_kws : 점의 색깔, 투명도 등 속성 지정
+
+plt.savefig('lm.png') # 파일로 저장
+plt.show() # close()
+
+# Generate some sequential data
+# 수치로 계산을 하는 게 아니라
+# 여자 - 1, 남자 - 2   카운트하기 위해 임의로 부여한 숫자
+# 비율, 개수
+x = np.array(list("ABCDEFGHIJ"))
+y1 = np.arange(1, 11)
+
+print(x)
+print(y1)
+
+sns.barplot(x=x, y=y1, palette="rocket"
+            ).axhline(6, color="g") # h - horizon (가로) / v - vertical (세로)
+
+import random
+
+# 시드값을 rs 라는 변수에 넣고 필요할 때 계속 불러다쓰기 위한 함수
+rs = np.random.RandomState(8)
+
+# Set up the matplotlib figure
+f, (ax1, ax2, ax3, ax4) = plt.subplots(4, 1, figsize=(7, 5), sharex=True) # 3개의 서브플롯으로 된 도화지를 그리겠다
+
+sns.barplot(x=x, y=y1, palette="rocket", ax=ax1) # ax=ax1 : 첫번째 그래프 의미
+ax1.axhline(0, color="k", clip_on=False) # 수평선 그린다
+ax1.set_ylabel("Sequential") # 서브플롯일 때 ylabel 지정해주는 옵션
+# Center the data to make it diverging
+y2 = y1 - 5.5
+sns.barplot(x=x, y=y2, palette="vlag", ax=ax2)
+ax2.axhline(0, color="k", clip_on=False)
+ax2.set_ylabel("Diverging")
+
+# Randomly reorder the data to make it qualitative
+y3 = rs.choice(y1, len(y1), replace=False)
+sns.barplot(x=x, y=y3, palette="deep", ax=ax3)
+ax3.axhline(0, color="k", clip_on=False)
+ax3.set_ylabel("Qualitative")
+
+y3 = rs.choice(y1, len(y1), replace=False)
+sns.barplot(x=x, y=y3, palette="deep", ax=ax4)
+ax4.axhline(0, color="k", clip_on=False)
+ax4.set_ylabel("Qualitative")
+
+# Finalize the plot
+sns.despine(bottom=True) # 축/테두리 제거
+plt.setp(f.axes, yticks=[])
+plt.tight_layout(h_pad=2)
 
