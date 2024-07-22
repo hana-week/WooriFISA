@@ -1,0 +1,410 @@
+#!pip install plotly
+!pip install --upgrade plotly
+# 런타임 다시 실행 부탁드립니다
+
+import plotly.io as pio # Plotly input output
+import plotly.express as px # 빠르게 그리는 방법
+import plotly.graph_objects as go # 디테일한 설정
+import plotly.figure_factory as ff # 템플릿 불러오기
+from plotly.subplots import make_subplots # subplot 만들기
+from plotly.validators.scatter.marker import SymbolValidator # Symbol 꾸미기에 사용됨
+
+import numpy as np
+import pandas as pd
+from urllib.request import urlopen
+import json # "{'key':'value' }"
+
+fig = {
+    "data": [{"type": "bar",
+              'x': ['1', '2', '3'],
+              'y': [1, 3, 2]}],
+    "layout": {"title": {"text": "딕셔너리로 그린 그래프"}} # 제목을 제시하려면?
+}
+
+# 한글 관련 설정을 구구절절 하지 않아도 지원합니다!!! 너무 편하고 좋죠!!!
+
+# To display the figure defined by this dict, use the low-level plotly.io.show function
+pio.show(fig)
+
+# 또 일단 하나 만들고 시작합니다!
+tips = px.data.tips()
+
+fig1 = px.scatter(tips, # 데이터명(데이터프레임 형식)
+                 x='tip', # x축에 들어갈 컬럼
+                 y='total_bill', # y축에 들어갈 컬럼
+                 color='sex', # 색상 구분 기준이 될 컬럼명 (seaborn의 hue와 같은 역할)
+                 marginal_x = 'box', # scatterplot의 옵션 중 하나인 인접 그래프의 스타일 지정 (히스토그램)
+                 marginal_y = 'histogram',# scatterplot의 옵션 중 하나인 인접 그래프의 스타일 지정 (히스토그램)
+                 trendline="ols",  # x축과 y축으로 지정된 데이터에 대해서 회귀분석(ols로)
+                 trendline_color_override="grey",  # trendline 색상 지정
+                 hover_name='day', # 팝업 데이터 최상단에 데이터프레임 컬럼명
+                 hover_data=['day', 'size'], # 참고할 데이터 추가 - tips.columns로 설정하면 다 보여줌
+                 title='Tips by Total Bill - Scatter Plot', # 그래프 타이틀 지정
+                 width=800,  # 그래프의 크기 조절
+                 height=600)
+fig1.show()
+
+import pandas as pd
+
+df = pd.DataFrame({
+  "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
+  "Contestant": ["Alex", "Alex", "Alex", "Jordan", "Jordan", "Jordan"],
+  "Number Eaten": [2, 1, 3, 1, 3, 2],
+})
+
+
+# Plotly Express
+
+import plotly.express as px
+
+fig = px.bar(df, x="Fruit", y="Number Eaten", color="Contestant", barmode="group")
+fig.show()
+
+
+# Graph Objects
+
+import plotly.graph_objects as go
+
+fig = go.Figure() # 도화지
+for contestant, group in df.groupby("Contestant"):
+    fig.add_trace(go.Bar(x=group["Fruit"], y=group["Number Eaten"], name=contestant,
+      hovertemplate="Contestant=%s<br>Fruit=%%{x}<br>Number Eaten=%%{y}<extra></extra>"% contestant))
+fig.update_layout(legend_title_text = "Contestant")
+fig.update_xaxes(title_text="Fruit")
+fig.update_yaxes(title_text="Number Eaten")
+fig.show()
+
+fig2 = go.Figure(
+
+    # data 파트는 데이터에 관한 정보를 지정
+    data=[go.Histogram(name ='Tips per Size',  # 데이터 제목
+                 x=tips['size'],  # x축 값 해당 컬럼명
+                 y=tips['tip'],  # y축 값 해당 컬럼명
+                 hoverlabel = dict(bgcolor = 'white'),  # 마우스를 올렸을 때 뜨는 정보창의 배경 설정
+                ),
+         ],
+
+    # layout 파트에서 그래프의 축, 범례 등 부가정보 기입.
+    layout=go.Layout(
+        title='Tips 데이터 분석',  # 메인 타이틀 입력
+        xaxis=dict(  # x축 설정
+            title = '팁금액과 방문인원수',
+            titlefont_size=20,
+            tickfont_size=10),
+        yaxis=dict(  # y축 설정
+            title= '전체 금액',
+            titlefont_size=15,
+            tickfont_size=10),
+        bargroupgap=0.3, # 그래프 간의 거리 조절
+        autosize=True))
+
+
+fig2.show()
+
+# { old : new }
+col_names = {'sepal_length': '꽃받침길이', 'sepal_width':'꽃받침너비', 'petal_length':'꽃잎길이', 'petal_width': '꽃잎너비'}
+iris.rename(columns=col_names, inplace=True)
+
+# 연속형변수 - 연속형변수
+px.scatter(iris, '꽃잎너비', '꽃잎길이', color='species')
+
+# 연속형변수 - 연속형변수
+# 특정 변수를 color 파라미터로 구분하려면 int/float이 아닌 object 타입을 걸어주셔야
+px.scatter(iris, '꽃잎너비', '꽃잎길이', color='species_id')
+
+fig = px.scatter(iris, x='꽃잎너비', y='꽃잎길이', color='species',
+                 hover_data=['꽃받침길이'], # 참고할 데이터 추가 - iris.columns로 설정하면 다 보여줌
+                 title='Iris Data - Scatter Plot',  # 그래프 타이틀 지정
+                 symbol = iris['species'], # 마커 모양 지정 https://plotly.com/python/marker-style/
+                 symbol_sequence= ['circle-open', 'circle', 'circle-open-dot'], # 마커 모양 지정
+                color_discrete_sequence = ['blue', 'orange', 'green']) # 마커 컬러 지정
+fig.show()
+
+fig = px.scatter(iris, x='꽃잎너비', y='꽃잎길이', color='꽃잎길이',
+                 hover_data=['꽃받침길이'], # 참고할 데이터 추가 - iris.columns로 설정하면 다 보여줌
+                 title='Iris Data - Scatter Plot',  # 그래프 타이틀 지정
+                 symbol = iris['species'], # 마커 모양 지정 https://plotly.com/python/marker-style/
+                 symbol_sequence= ['circle-open', 'circle', 'circle-open-dot'], # 마커 모양 지정
+                color_discrete_sequence = ['blue', 'orange', 'green']) # 마커 컬러 지정
+fig.show()
+
+import plotly.graph_objects as go
+
+fig = go.Figure(data=go.Scatter( # x축 값을 생략한 경우 DataFrame의 Index에 의해 배치됨
+    y = iris['꽃받침길이'], # y축 값 sepal_length 값에 따라 배치
+    mode='markers', # Scatter Plot을 그리기 위해 Markers
+    marker=dict(    # Marker에 대한 세부 설정을 지정
+        size=20,    # 점 크기
+        color=iris['꽃잎길이'], # 색깔 값을 petal_length에 따라 변하도록 설정
+        colorscale='Viridis', # one of plotly colorscales
+        showscale=True,  # colorscales 보여줌
+        line_width=1, # 마커 라인 두께 설정
+    )
+))
+fig.update_layout(title='Iris Data')
+fig.show()
+
+# 2019년 이전에 남한/북한 KOR 이라는 ISO_ALPHA 공유 중
+gapminder[gapminder.iso_alpha == 'KOR']
+# 국가별 어쩌고를 따질 때 ISO_ALPHA 말고 country를 써야겠구나
+
+px.scatter(gap2007, 'gdpPercap', 'lifeExp', color='continent', hover_data='country', \
+           log_x=True, trendline='ols')
+# 주식, 지진강도 등의 변화율이 급격한 데이터에서 변곡점을 표현하기 위해 로그스케일을 사용합니다
+# 큰 숫자 / 작은 숫자를 모두 볼수 있고, 변화의 '폭'(비율)을 살펴볼 수 있습니다.
+
+px.scatter(gap2007, 'gdpPercap', 'lifeExp', color='continent', hover_data='country', \
+           log_x=True, trendline='lowess')
+# 주식, 지진강도 등의 변화율이 급격한 데이터에서 변곡점을 표현하기 위해 로그스케일을 사용합니다
+# 큰 숫자 / 작은 숫자를 모두 볼수 있고, 변화의 '폭'(비율)을 살펴볼 수 있습니다.
+# trendline='lowess' - 국지적인 변화를 함께 살펴볼 수 있다.
+
+# 연속형변수, 시간의 흐름에 따라 그릴 때
+px.line(gapAsia, x='year', y ='lifeExp', color='country')
+
+import yfinance as yf
+
+msft = yf.Ticker("MSFT")
+
+# get all stock info
+msft.info
+
+# get historical market data
+hist = msft.history(period="1mo")
+# hist
+
+# # show meta information about the history (requires history() to be called first)
+msft.history_metadata
+
+# # show actions (dividends, splits, capital gains)
+# msft.actions
+# msft.dividends
+# msft.splits
+# msft.capital_gains  # only for mutual funds & etfs
+
+# # show share count
+# msft.get_shares_full(start="2022-01-01", end=None)
+
+# # show financials:
+# # - income statement
+# msft.income_stmt
+# msft.quarterly_income_stmt
+# # - balance sheet
+# msft.balance_sheet
+# msft.quarterly_balance_sheet
+# # - cash flow statement
+# msft.cashflow
+# msft.quarterly_cashflow
+# # see `Ticker.get_income_stmt()` for more options
+
+# # show holders
+# msft.major_holders
+# msft.institutional_holders
+# msft.mutualfund_holders
+# msft.insider_transactions
+# msft.insider_purchases
+# msft.insider_roster_holders
+
+# msfs.sustainability
+
+# # show recommendations
+# msft.recommendations
+# msft.recommendations_summary
+# msft.upgrades_downgrades
+
+# # Show future and historic earnings dates, returns at most next 4 quarters and last 8 quarters by default.
+# # Note: If more are needed use msft.get_earnings_dates(limit=XX) with increased limit argument.
+# msft.earnings_dates
+
+# # show ISIN code - *experimental*
+# # ISIN = International Securities Identification Number
+# msft.isin
+
+# # show options expirations
+# msft.options
+
+# # show news
+# msft.news
+
+# # get option chain for specific expiration
+# opt = msft.option_chain('YYYY-MM-DD')
+# # data available via: opt.calls, opt.puts
+
+import pandas as pd
+import numpy as np
+import yfinance as yf
+
+samsung = yf.download('005930.KS',
+                      start='2014-07-22',
+                      end='2024-07-22',
+                      progress=False)
+
+samsung = samsung.reset_index()
+
+# samsung['Date'] = pd.to_datetime(samsung['day']) # 다른 모듈을 사용해서 날짜를 날짜로 인식하지 않고 string으로 인식할 때 써주시면 됩니다.
+# Date	Open	High	Low	Close
+samsung
+
+import plotly.graph_objects as go
+
+import pandas as pd
+
+# Load data
+df = pd.read_csv(
+    "https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv")
+df.columns = [col.replace("AAPL.", "") for col in df.columns]
+
+# Create figure
+fig = go.Figure()
+
+fig.add_trace(
+    go.Scatter(x=list(df.Date), y=list(df.High)))
+
+# Set title
+fig.update_layout(
+    title_text="Time series with range slider and selectors"
+)
+
+# Add range slider
+fig.update_layout(
+    xaxis=dict(
+        rangeselector=dict(
+            buttons=list([
+                dict(count=1,
+                     label="1m",
+                     step="month",
+                     stepmode="backward"),
+                dict(count=6,
+                     label="6m",
+                     step="month",
+                     stepmode="backward"),
+                dict(count=1,
+                     label="YTD",
+                     step="year",
+                     stepmode="todate"),
+                dict(count=1,
+                     label="1y",
+                     step="year",
+                     stepmode="backward"),
+                dict(step="all")
+            ])
+        ),
+        rangeslider=dict(
+            visible=True
+        ),
+        type="date"
+    )
+)
+
+fig.show()
+
+# category 타입으로 타입 캐스팅
+samsung1['Category'] = samsung1.Time.astype('category')
+
+samsung1.Category.unique() # 출력 순서를 고정할 수 있다, 메모리 차지가 덜하다
+# .cat.reorder_categories([순서1, 순서2])를 원본에 적용
+samsung1.Category = samsung1.Category.cat.reorder_categories(['Open', 'Close'])
+
+df2 = df2.melt(id_vars=['product','store'], var_name='product_info', value_name='product_value')
+# 시각화시 그래프로 그려보기
+
+# 물건을 사러 갈 때 알아보기 쉬운 방식으로 df1를 출력해주세요
+px.bar(df1, x='product', y='price', color='store', barmode='group')
+
+tips # bar - 질적 변수들의 개수를 세서 그래프에 얹어놓을 때 전체 중 비율
+px.bar(tips, 'sex', 'total_bill')
+
+# 양적변수, 일변량
+px.histogram(tips, 'total_bill')
+
+fig = px.histogram(tips, x='total_bill', nbins=20, opacity=0.6)
+fig.show()
+# 구간을 nbins로 정해주면 그 언저리에서 적당히 빈 경계가 없도록 개수를 조정해서 출력합니다.
+
+import plotly.figure_factory as ff
+import numpy as np
+
+
+# Create distplot with custom bin_size
+fig = ff.create_distplot([tips.tip], ['tip'], show_hist=False)
+fig.show()
+
+import plotly.figure_factory as ff
+import numpy as np
+
+# Add histogram data
+x1 = np.random.randn(200)-2
+x2 = np.random.randn(200)
+x3 = np.random.randn(200)+2
+x4 = np.random.randn(200)+4
+
+# Group data together
+hist_data = [x1, x2, x3, x4]
+
+group_labels = ['Group 1', 'Group 2', 'Group 3', 'Group 4']
+
+# Create distplot with custom bin_size
+fig = ff.create_distplot(hist_data, group_labels, bin_size=[.1, .25, .5, 1])
+fig.show()
+
+import plotly.figure_factory as ff
+import numpy as np
+np.random.seed(1)
+
+X = np.random.rand(15, 12) # 15 samples, with 12 dimensions each
+fig = ff.create_dendrogram(X)
+fig.update_layout(width=800, height=500)
+fig.show()
+
+fig = go.Figure(data=go.Scatter(x=tips['tip'], y=tips['total_bill'],
+                                mode='markers',
+                                # marker_color=tips['tip'],
+                                text=tips['size'],
+                                marker=dict(size=10, color=tips['size'],
+                                            colorscale="YlOrRd", showscale=True)
+                                ))
+fig.update_layout(title='Tips by Total Bill')
+fig.show()
+
+pio.templates  # plotly input output
+
+fig = go.Figure(data=go.Scatter(x=tips['tip'], y=tips['total_bill'],
+                                mode='markers',
+                                # marker_color=tips['tip'],
+                                text=tips['size'],
+                                marker=dict(size=10, color=tips['size'],
+                                            colorscale="YlOrRd", showscale=True)
+                                ))
+fig.update_layout(title='Tips by Total Bill')
+fig.show(config=config)
+
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+# Create figure with secondary y-axis
+fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+# Add traces
+fig.add_trace(
+    go.Scatter(x=[1, 2, 3], y=[40, 50, 60], name="yaxis data"),
+    secondary_y=False,
+)
+
+fig.add_trace(
+    go.Scatter(x=[2, 3, 4], y=[4, 5, 6], name="yaxis2 data"),
+    secondary_y=True,
+)
+
+# Add figure title
+fig.update_layout(
+    title_text="Double Y Axis Example"
+)
+
+# Set x-axis title
+fig.update_xaxes(title_text="xaxis title")
+
+# Set y-axes titles
+fig.update_yaxes(title_text="<b>primary</b> yaxis title", secondary_y=False)
+fig.update_yaxes(title_text="<b>secondary</b> yaxis title", secondary_y=True)
+
+fig.show()
