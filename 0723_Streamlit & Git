@@ -1,1 +1,165 @@
+$ conda update conda
+$ conda update --all
+$ conda create --name woori 
+$ conda activate woori
+$ conda install streamlit
+$ streamlit hello 
+$ streamlit run 파일명.py 
 
+
+# git에서 사용
+# 내 로컬 레포지토리의 변경사항을 업로드 할 때
+$ git add .
+$ git commit -m "변경사항 메시지"
+$ git push origin main
+
+# 원격 레포지토리의 변경사항을 가져올 때
+$ git pull origin main
+
+def password_test():
+ password = input("비밀번호를 입력하세요: ")
+ while not password:
+    password = input("다시 비밀번호를 입력하세요: ")
+ return password
+
+returned = password_test()
+
+def count_words(words):
+    count = 0
+    for word in words:
+        if "kim" in word.lower():
+            count += 1
+    return count
+
+words = ["Kim", "kimchi", "gim"]
+print(count_words(words))
+
+def multiply(num1, num2):
+    """
+    들어온 값을 제곱하는 함수입니다.
+
+    >>> multiply(3, 5)
+    15
+
+    >>> multiply(6, 8)
+    48
+    """
+    return num1 * num2
+
+import doctest
+doctest.testmod(verbose=True) # verbose 인수 제외
+
+```jsx
+def multiply(num1, num2):
+    """
+    들어온 값을 제곱하는 함수입니다.
+
+    >>> multiply(3, 5)
+    15
+
+    >>> multiply(6, 8)
+    48 
+    """
+    return num1 * num2
+
+import doctest
+doctest.testmod() # verbose 인수 제외
+```
+
+```jsx
+def multiply(num1, num2):
+    """
+    들어온 값을 제곱하는 함수입니다.
+
+    >>> multiply(3, 5)
+    15
+
+    >>> multiply(6, 8)
+    48
+    """
+    return num1 * num2
+
+def make_list(a, b):
+    c = multiply(a, b)
+    list_ = [a, b, c]
+    return list_
+
+import doctest
+doctest.testmod(verbose=True)
+
+make_list(3, 5)
+```
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        }
+    ]
+}
+
+import streamlit as st
+import pandas as pd
+import FinanceDataReader as fdr
+import datetime
+import matplotlib.pyplot as plt
+import matplotlib 
+from io import BytesIO
+import plotly.graph_objects as go
+import pandas as pd
+
+# caching
+# 인자가 바뀌지 않는 함수 실행 결과를 저장 후 크롬의 임시 저장 폴더에 저장 후 재사용
+@st.cache_data
+def get_stock_info():
+    base_url =  "http://kind.krx.co.kr/corpgeneral/corpList.do"    
+    method = "download"
+    url = "{0}?method={1}".format(base_url, method)   
+    df = pd.read_html(url, header=0)[0]
+    df['종목코드']= df['종목코드'].apply(lambda x: f"{x:06d}")     
+    df = df[['회사명','종목코드']]
+    return df
+
+def get_ticker_symbol(company_name):     
+    df = get_stock_info()
+    code = df[df['회사명']==company_name]['종목코드'].values    
+    ticker_symbol = code[0]
+    return ticker_symbol
+
+# 코드 조각 추가
+ticker_symbol = get_ticker_symbol(stock_name)     
+start_p = date_range[0]               
+end_p = date_range[1] + datetime.timedelta(days=1) 
+df = fdr.DataReader(f'KRX:{ticker_symbol}', start_p, end_p)
+df.index = df.index.date
+st.subheader(f"[{stock_name}] 주가 데이터")
+st.dataframe(df.tail(7))
+
+excel_data = BytesIO()      
+df.to_excel(excel_data)
+
+st.download_button("엑셀 파일 다운로드", 
+        excel_data, file_name='stock_data.xlsx')
+
+# 코드를 담고 싶은 원격 repository를 새로 만든 후 그 링크를 복사
+# 본인의 workspace(작업공간)으로 이동
+# git bash 를 실행 시키거나 VS code 키고 터미널 open
+$ git clone <repository 링크>
+# 작업 완료
+$ git add .
+$ git commit -m "이번 커밋에서 변경한 작업에 대한 메시지"
+$ git push -u origin main # 원격 저장소로 업로드
+# 저장소 반영되었는지 확인
+
+$ git add . 
+$ git commit -m "edit"
+$ git pull origin main
+$ git push origin main
