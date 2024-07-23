@@ -1,3 +1,11 @@
+# pip list --format=freeze > requirements.txt
+# 로컬 의존성 없이 버전만 리스트업하는 requirements.txt
+
+# 터미널에서 먼저
+# conda install streamlit pandas FinanceDataReader plotly openpyxl
+# pip install -U finance-datareader
+# pip install html5lib
+
 import streamlit as st
 import pandas as pd
 import FinanceDataReader as fdr
