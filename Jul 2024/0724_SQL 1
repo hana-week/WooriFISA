@@ -1,1 +1,68 @@
+CREATE {DATABASE|SCHEMA} [IF NOT EXISTS] 데이터베이스명;
+CREATE DATABASE mywork;
+DROP {DATABASE|SCHEMA} [IF EXISTS] 데이터베이스명;
 
+CREATE TABLE [IF NOT EXISTS] 테이블명
+(
+    칼럼1 데이터타입,
+    칼럼2 데이터타입,
+    칼럼3 데이터타입,
+    ...
+);
+
+DROP DATABASE IF EXISTS student_mgmt;
+CREATE DATABASE student_mgmt DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+USE student_mgmt;
+DROP TABLE IF EXISTS students;
+CREATE TABLE students (
+  id TINYINT NOT NULL AUTO_INCREMENT, -- 숫자 자동 생성
+  name VARCHAR(10) NOT NULL, 
+  gender ENUM('man','woman') NOT NULL,
+  birth DATE NOT NULL,
+  english TINYINT NOT NULL,
+  math TINYINT NOT NULL,
+  korean TINYINT NOT NULL,
+  PRIMARY KEY (id) -- 기본키
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('dave', 'man', '1983-07-16', 90, 80, 71);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('minsun', 'woman', '1982-10-16', 30, 88, 60);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('david', 'man', '1982-12-10', 78, 77, 30);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('jade', 'man', '1979-11-1', 45, 66, 20);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('jane', 'man', '1990-11-12', 65, 32, 90);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('wage', 'woman', '1982-1-13', 76, 30, 80);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('tina', 'woman', '1982-12-3', 87, 62, 71);
+
+# MySQL 이 최신일 때 = utf8mb4 charset 에, utf8mb4_unicode_ci collation 사용.
+
+FOREIGN KEY (열 이름) REFERENCES 참조하는 테이블(참조하는 열 이름)
+
+-- box_office 테이블 생성 
+create table box_office (
+     seq_no          INT PRIMARY KEY,
+     years           SMALLINT,
+     ranks           INT,
+     movie_name      VARCHAR(200),
+     release_date    DATETIME,
+     sale_amt        DOUBLE,
+     share_rate      DOUBLE,
+     audience_num    INT,
+     screen_num      SMALLINT,
+     showing_count   INT,
+     rep_country     VARCHAR(50),
+     countries       VARCHAR(100),
+     distributor     VARCHAR(300),
+     movie_type      VARCHAR(100),
+     genre           VARCHAR(100),
+     director        VARCHAR(1000)
+);
+
+# 리눅스 환경에서의 DB 사용 
+
+HostAddress: 118.67.131.22
+ID: fisaai
+PW: woorifisa3!W
+
+# 환경변수에 MYSQL 폴더 추가 후
+$ mysql -h 118.67.131.22 -u admin -p
