@@ -66,3 +66,138 @@ PW: woorifisa3!W
 
 # 환경변수에 MYSQL 폴더 추가 후
 $ mysql -h 118.67.131.22 -u admin -p
+
+SELECT 칼럼1, 칼럼2, ...
+  FROM 테이블;
+
+SELECT *
+  FROM 테이블
+ WHERE 조회 조건;
+
+SELECT *
+  FROM 테이블
+ WHERE 조회 조건
+ ORDER BY 칼럼1 [ASC|DESC], 칼럼2 [ASC|DESC]; -- 기본은 오름차순 정렬
+
+SELECT name, continent, region
+  FROM country
+ WHERE population > 50000000
+ ORDER BY continent, region DESC;
+
+SELECT code, name, continent, region, population
+  FROM country
+ WHERE population > 100000000
+ ORDER BY 5 ASC; -- 컬럼명을 구체적으로 쓰는대신 컬럼의 순서를 명시하는 방법도 있음
+
+SELECT *
+  FROM 테이블
+ WHERE 조회 조건
+ ORDER BY ...
+ LIMIT n;
+
+DROP DATABASE IF EXISTS student_mgmt;
+CREATE DATABASE student_mgmt DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+USE student_mgmt;
+DROP TABLE IF EXISTS students;
+CREATE TABLE students (
+  id TINYINT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(10) NOT NULL,
+  gender ENUM('man','woman') NOT NULL,
+  birth DATE NOT NULL,
+  english TINYINT NOT NULL,
+  math TINYINT NOT NULL,
+  korean TINYINT NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('dave', 'man', '1983-07-16', 90, 80, 71);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('minsun', 'woman', '1982-10-16', 30, 88, 60);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('david', 'man', '1982-12-10', 78, 77, 30);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('jade', 'man', '1979-11-1', 45, 66, 20);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('jane', 'man', '1990-11-12', 65, 32, 90);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('wage', 'woman', '1982-1-13', 76, 30, 80);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('tina', 'woman', '1982-12-3', 87, 62, 71);
+
+SELECT *
+  FROM 테이블
+ WHERE 조회 조건
+ GROUP BY 칼럼[표현식, 순번]1, 칼럼[표현식, 순번]2, ...
+ HAVING 조건식 -- GROUP BY와 함께 사용
+ ORDER BY ...
+ LIMIT n;
+
+SELECT DISTINCT gender FROM students;
+
+MAX([DISTINCT] expr)
+MIN([DISTINCT] expr)
+AVG([DISTINCT] expr)
+SUM([DISTINCT] expr)
+
+SET @변수이름 = 변수의 값; -- 변수 선언 및 값 대입
+SELECT @변수이름; -- 변수의 값 출력
+
+SET @count = 5;
+SELECT code, name, continent, region, population
+  FROM country
+ WHERE population > 100000000
+ ORDER BY @count ASC; 
+
+SET @count = 5;
+PREPARE mySQL FROM 'SELECT code, name, continent, region, population
+  FROM world.country
+ WHERE population > 100000000
+ ORDER BY 1 ASC
+ LIMIT ?';
+EXECUTE mySQL USING @count;
+
+USE fisa;
+
+drop table IF EXISTs emp;
+drop table IF EXISTs dept;
+DROP TABLE IF EXISTS salgrade;
+
+CREATE TABLE dept (
+    deptno               int  NOT NULL ,
+    dname                varchar(20),
+    loc                  varchar(20),
+    CONSTRAINT pk_dept PRIMARY KEY ( deptno )
+ );
+ 
+CREATE TABLE emp (
+    empno                int  NOT NULL  AUTO_INCREMENT,
+    ename                varchar(20),
+    job                  varchar(20),
+    mgr                  smallint ,
+    hiredate             date,
+    sal                  numeric(7,2),
+    comm                 numeric(7,2),
+    deptno               int,
+    CONSTRAINT pk_emp PRIMARY KEY ( empno )
+ );
+ 
+CREATE TABLE salgrade
+ ( 
+	GRADE INT,
+	LOSAL numeric(7,2),
+	HISAL numeric(7,2) 
+);
+
+ALTER TABLE emp 
+ADD CONSTRAINT fk_emp_dept FOREIGN KEY ( deptno ) REFERENCES dept( deptno ) 
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- 부서번호, 부서이름, 부서가 있는 지역 
+insert into dept values(10, 'ACCOUNTING', 'NEW YORK');
+insert into dept values(20, 'RESEARCH', 'DALLAS');
+insert into dept values(30, 'SALES', 'CHICAGO');
+insert into dept values(40, 'OPERATIONS', 'BOSTON');
+
+desc dept;
+desc emp;
+desc salgrade;
+
+-- STR_TO_DATE() : 단순 문자열을 날짜 형식의 타입으로 변환 
+insert into emp values( 7839, 'KING', 'PRESIDENT', null, STR_TO_DATE ('17-11-1981','%d-%m-%Y'), 5000, null, 10);
+insert into emp values( 7698, 'BLAKE', 'MANAGER', 7839, STR_TO_DATE('1-5-1981','%d-%m-%Y'), 2850, null, 30);
+insert into emp values( 7782, 'CLARK', 'MANAGER', 7839, STR_TO_DATE('9-6-1981','%d-%m-%Y'), 2450, null, 10);

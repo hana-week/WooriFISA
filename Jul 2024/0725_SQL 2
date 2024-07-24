@@ -1,0 +1,321 @@
+SELECT ...
+  FROM 테이블1 [AS] 별칭1
+[INNER] JOIN 테이블2 [AS] 별칭2
+    ON 별칭1.칼럼1 = 별칭2.칼럼2
+   AND ...
+ WHERE ... ;
+
+SELECT ...
+  FROM 테이블1 [AS] 별칭1,
+       테이블2 [AS] 별칭2
+ WHERE 별칭1.칼럼1 = 별칭2.칼럼2
+   AND ... ;
+
+SELECT ...
+  FROM 테이블1 [AS] 별칭1
+  LEFT [OUTER] JOIN 테이블2 [AS] 별칭2
+    ON 별칭1.칼럼1 = 별칭2.칼럼2
+   AND ...
+ WHERE ... ;
+
+SELECT ...
+  FROM 테이블1 [AS] 별칭1
+ RIGHT [OUTER] JOIN 테이블2 [AS] 별칭2
+    ON 별칭1.칼럼1 = 별칭2.칼럼2
+   AND ...
+ WHERE ... ;
+
+## SQL 실행순서
+-- FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT
+
+-- 모든 부서의 정보와 함께 커미션이 있는 직원들의 커미션과 이름을 조회해 보세요.
+
+-- 모든 부서의 부서별 연봉에 대한 총합과 평균과 표준편차를 구하고
+-- 모든 부서의 사원수를 구해 보세요.
+
+-- 각 관리자의 부하직원수와 부하직원들의 평균연봉을 구해 보세요.
+
+# Sub-Query 
+-- 쿼리 안쪽에 쿼리를 넣을수 있다.
+-- where 절에서의 서브쿼리
+-- scott과 같은 부서에 있는 직원 이름을 검색해 보세요.
+
+-- 직무(job)가 Manager인 사람들이 속한 부서의 부서번호와 부서명 , 지역을 조회해 보세요.
+	-- manager 사람들이 다수이기 때문에 where절에 in 을 활용!
+
+# from 절에서의 서브쿼리
+-- emp 테이블에서 급여가 2000이 넘는 사람들의 이름과 부서번호, 부서이름, 지역 조회해 보세요.
+
+-- emp 테이블에서 커미션이 있는 사람들의 이름과 부서번호, 부서이름, 지역을 조회해 보세요.
+
+-- join 절에서의 서브쿼리
+
+-- 모든 부서의 부서이름과, 지역, 부서내의 평균 급여를 조회해 보세요.
+
+SELECT ...
+ UNION [DISTINCT|ALL]
+SELECT ...
+ [UNION [DISTINCT|ALL]]
+... ;
+
+-- 실습용 테이블 만들기
+DROP TABLE IF EXISTS tbl1, tbl2;
+CREATE TABLE tbl1 (col1 INT, col2 VARCHAR(20));
+
+CREATE TABLE tbl2 (col1 INT, col2 VARCHAR(20));
+
+INSERT INTO tbl1 VALUES (1, '가'), (2, '나'), (3, '다');
+
+INSERT INTO tbl2 VALUES (1, 'A'), (2, 'B');
+
+SELECT * FROM tbl1;
+
+SELECT * FROM tbl2;
+
+DROP DATABASE IF EXISTS student_mgmt;
+CREATE DATABASE student_mgmt DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+USE student_mgmt;
+DROP TABLE IF EXISTS students;
+CREATE TABLE students (
+  id TINYINT NOT NULL AUTO_INCREMENT, -- 숫자 자동 생성
+  name VARCHAR(10) NOT NULL, 
+  gender ENUM('man','woman') NOT NULL,
+  birth DATE NOT NULL,
+  english TINYINT NOT NULL,
+  math TINYINT NOT NULL,
+  korean TINYINT NOT NULL,
+  PRIMARY KEY (id) -- 기본키
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('dave', 'man', '1983-07-16', 90, 80, 71);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('minsun', 'woman', '1982-10-16', 30, 88, 60);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('david', 'man', '1982-12-10', 78, 77, 30);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('jade', 'man', '1979-11-1', 45, 66, 20);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('jane', 'man', '1990-11-12', 65, 32, 90);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('wage', 'woman', '1982-1-13', 76, 30, 80);
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('tina', 'woman', '1982-12-3', 87, 62, 71);
+
+/* INSERT와 UPDATE를 동시에 처리
+조건을 확인해 이미 대상 테이블에 값이 있으면 수정하고 없으면 입력하는 방법입니다.
+INSERT INTO 테이블명 (칼럼1, 칼럼2, ...)
+VALUES 절(또는 SELECT 문)
+ON DUPLICATE KEY UPDATE 칼럼 = 값1, 값2, ... ;
+
+ON DUPLICATE KEY UPDATE 구문을 추가하면 충돌이 발생하는 로우에서는 신규로 값을 입력하는 것이 아니라 기존에 저장된 값을 변경합니다.
+*/
+
+DESC people;
+
+SELECT * FROM people;
+INSERT INTO people (name, age) VALUES ('김연지', 25)
+ON DUPLICATE KEY UPDATE
+name = '중복값',
+age = age + 1;
+
+SELECT * FROM people;
+
+ALTER TABLE people ADD CONSTRAINT PRIMARY KEY (name);
+
+DESC people;
+
+DELETE FROM people;
+
+SELECT * FROM people;
+
+DESC people;
+
+ALTER TABLE people ADD CONSTRAINT PRIMARY KEY (name);
+
+DESC people;
+
+-- 아래 구문은 4번 정도 반복해보세요
+INSERT INTO people (name, age) VALUES ('김연지', 25)
+ON DUPLICATE KEY UPDATE
+name = '중복값',
+age = age + 1;
+
+SELECT * FROM people;
+
+INSERT INTO 테이블이름 (열이름1, 열이름2, ...)
+	SELECT 문;
+
+SELECT COUNT(*) FROM world.city;
+
+DESC world.city;
+
+SELECT * FROM world.city LIMIT 5;
+
+CREATE TABLE city_popul ( city_name CHAR(35), population INT);
+
+INSERT INTO city_popul
+    SELECT name, population FROM world.city; 
+
+-- 다중 로우 입력 INSERT 문
+INSERT INTO 테이블 (칼럼1, 칼럼2, ...)
+  VALUES [ROW](값1, 값2, ...), [ROW](값1, 값2, ...);
+
+INSERT INTO students (name, gender, birth, english, math, korean) VALUES 
+('jjangu', 'man', '2018-07-16', 50, 30, 21),
+('jjanga', 'woman', '2019-05-03', 0, 0, 0);
+
+INSERT INTO emp_test
+SELECT empno + 10, emp_name, hire_date, 100
+  FROM emp
+ WHERE emp_no >= 1008;
+
+SELECT *
+  FROM emp_test;
+
+UPDATE 테이블
+   SET 칼럼1 = 값1,
+       칼럼2 = 값2, ...
+WHERE ...
+ORDER BY ...
+LIMIT ... ;
+
+UPDATE 테이블1, 테이블2, ...
+   SET 칼럼1 = 값1,
+       칼럼2 = 값2, ...
+ WHERE 조건;
+
+```
+DELETE FROM 테이블
+ WHERE 조건
+ ORDER BY ...
+ LIMIT ... ;
+```
+
+```
+DELETE 테이블별칭1, 테이블별칭2, ...
+  FROM 테이블1 테이블별칭1, 테이블2 테이블별칭2, ...
+ WHERE 조건;
+```
+
+```
+DELETE FROM 테이블별칭1, 테이블별칭2, ...
+ USING 테이블1 테이블별칭1, 테이블2 테이블별칭2, ...
+ WHERE 조건;
+```
+
+INSERT INTO 테이블명 (칼럼1, 칼럼2, ...)
+VALUES 절(또는 SELECT 문)
+    ON DUPLICATE KEY UPDATE 칼럼 = 값1, 값2, ... ;
+
+/* INSERT와 UPDATE를 동시에 처리 
+조건을 확인해 이미 대상 테이블에 값이 있으면 수정하고 없으면 입력하는 방법입니다.
+INSERT INTO 테이블명 (칼럼1, 칼럼2, ...)
+VALUES 절(또는 SELECT 문)
+    ON DUPLICATE KEY UPDATE 칼럼 = 값1, 값2, ... ;
+
+ON DUPLICATE KEY UPDATE 구문을 추가하면 충돌이 발생하는 
+로우에서는 신규로 값을 입력하는 것이 아니라 기존에 저장된 값을 변경합니다.
+*/ 
+DESC people;
+
+SELECT * FROM people;
+INSERT INTO people (name, age) VALUES ('김연지', 25) 
+ON DUPLICATE KEY UPDATE 
+  name = '중복값', 
+  age = age + 1;
+
+SELECT * FROM people;
+
+ALTER TABLE people ADD CONSTRAINT PRIMARY KEY (name); 
+
+DESC people;
+
+DELETE FROM people; 
+
+SELECT * FROM people;
+
+DESC people;
+
+ALTER TABLE people ADD CONSTRAINT PRIMARY KEY (name); 
+
+DESC people;
+
+-- 아래 구문은 4번 정도 반복해보세요
+INSERT INTO people (name, age) VALUES ('김연지', 25) 
+ON DUPLICATE KEY UPDATE 
+  name = '중복값', 
+  age = age + 1;
+  
+SELECT * FROM people;
+
+-- PK를 지정하면 저절로 클러스터형 인덱스가 지정됨
+ALTER TABLE students ADD PRIMARY KEY (id);
+
+-- 위 코드와 같은 의미
+CREATE CLUSTERED INDEX idx_students_id ON students (id);
+
+-- 제거
+DROP 인덱스명 ON 테이블명;
+
+-- 확인
+SHOW INDEX FROM students;
+SHOW TABLE STATUS LIKE 'students';
+
+CREATE INDEX idx_students_english ON students (english);
+
+CREATE UNIQUE INDEX idx_students_english ON students (english);
+
+ALTER TABLE students ADD INDEX idx_students_english (english);
+
+SELECT english FROM students;
+-- 결과의 Execution Plan 창에서 확인해보기
+
+SHOW PROCEDURE STATUS; -- 프로시저 목록 확인
+SHOW CREATE PROCEDURE 프로시저이름; -- 프로시저 내용 확인
+DROP PROCEDURE 프로시저이름; -- 프로시저 삭제
+
+use student_mgmt;
+
+-- gender가 'man'인 학생들의 수를 세는 스토어드 프로시저 예제
+DELIMITER //
+CREATE PROCEDURE count_men()
+BEGIN
+    DECLARE count INT;
+    SELECT COUNT(*) INTO count FROM students WHERE gender = 'man';
+    IF count > 3 THEN
+        SELECT 'Many men' AS result;
+    ELSE
+        SELECT 'Few men' AS result;
+    END IF;
+END //
+DELIMITER ;
+
+select * from students;
+call count_men();
+
+DROP TABLE IF EXISTS gate_table;
+CREATE TABLE gate_table (id INT AUTO_INCREMENT PRIMARY KEY, entry_time DATETIME);
+
+SET @curDate = CURRENT_TIMESTAMP(); -- 현재 날짜와 시간
+
+PREPARE myQuery FROM 'INSERT INTO gate_table VALUES(NULL, ?)';
+EXECUTE myQuery USING @curDate;
+DEALLOCATE PREPARE myQuery;
+
+SELECT * FROM gate_table;
+
+
+
+SET @count = 5;
+PREPARE mySQL FROM 'SELECT code, name, continent, region, population
+  FROM country
+ WHERE population > 100000000
+ ORDER BY 1 ASC
+ LIMIT ?';
+EXECUTE mySQL USING @count;
+
+DELIMITER $$
+
+CREATE TRIGGER 트리거이름
+    AFTER DELETE -- 트리거를 달 동작
+    ON 테이블 FOR EACH ROW
+BEGIN
+    -- 문장
+END $$    
+
+DELIMITER ;
