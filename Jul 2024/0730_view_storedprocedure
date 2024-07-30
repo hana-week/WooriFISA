@@ -1,0 +1,362 @@
+-- 7.view.sql
+
+/*
+1. view 
+	- 물리적으로는 미 존재, 단 논리적으로 존재
+	- 하나 이상의 테이블을 조회한 결과 집합의 독립적인 데이터베이스 객체
+	- 논리적(존재하는 table들에 종속적인 가상 table)
+
+2. 개념
+	- 보안을 고려해야 하는 table의 특정 컬럼값 은닉
+	또는 여러개의 table의 조인된 데이터를 다수 활용을 해야 할 경우
+	특정 컬럼 은닉, 다수 table 조인된 결과의 새로운 테이블 자체를 
+	가상으로 db내에 생성시킬수 있는 기법 
+
+3. 문법
+	- create와 drop : create view/drop view
+	- crud는 table과 동일
+	
+	CREATE VIEW view_name AS
+	SELECT column1, column2, ...
+	FROM table_name
+	WHERE condition;
+*/
+
+-- ?? mysql 테이블 복사 -> 원본이 새로 생겨나는 개념
+
+
+SELECT * FROM emp_; -- 바로가기 
+
+-- ?? 맨 마지막 행에 1800불 커미션은 안 받는 사람의 정보를 하나 넣어주세요
+-- ?? 1. emp table과 dept table 기반으로 empno, ename, deptno, dname으로 view 생성
+-- dept table의 SALES라는 데이터를 영업으로 변경 후 view 검색
+
+
+
+-- 새로운 값을 넣고 emp와 dept에 어떤 영향이 있는지 직접 확인해보세요 
+
+-- view는 가짜테이블 밖에서는 테이블인지 아닌지 알 수 없어요.
+-- view에서도 값을 변경하거나 삭제하거나 추가할 수 있을까?
+
+-- 순서대로 넣었어도 원본에 있는 컬럼 중 어디에 들어갈 지 적어두셔야 합니다.
+-- 2개 이상의 테이블이 걸려있는 view에 대해서는  
+
+
+-- view에 변경된 사항이 원본에 영향을 미칠까??
+-- view에서 값을 변경할 수 있다면 원본의 제약조건의 영향을 받을까??
+
+
+-- emp의 empno는 key성질을 여전히 유지할 수 있으므로
+-- key preserved table이나, 
+-- dept의 deptno는 더 이상 unique 성질을 유지하지 못해
+-- key-preserved table이 아니게 됩니다. 
+-- 즉 emp table에 속한 empno, ename, deptno만이 변경 가능해집니다. 
+-- JOIN VIEW는 많이 사용됩니다. 
+-- 값을 변경할 때 1개의 PK만 남게 되므로 1개 테이블의 값만 변경이 가능해진다.
+
+-- 2. view 삭제
+
+-- 1개의 테이블에서 유래한 VIEW는 어떻게 동작하는지 확인해보세요.
+-- 3. ? emp table에서 comm을 제외한 emp01_v 라는 view 생성
+
+
+
+-- ALLEN 이름을 한국어 알렌으로 변경
+-- 월급도 100불 올려주시고 확인해보세요.
+
+-- 알렌씨를 삭제도 해 주세요 
+
+
+
+insert into  emp01_v values( 7499, 'ALLEN', 'SALESMAN', 7698, STR_TO_DATE('20-2-1981','%d-%m-%Y'), 1600, 30);
+
+
+-- 4. dept01_v에 crud : dep01_v와 dept01 table 변화 동시 검색
+-- view만 수정해도 원본 table의 데이터가 동기화
+-- *** DML은 view에 적용 가능, 원본 table에도 적용 
+-- dept01_v에서 50번 부서, '교육', '상암' 
+-- emp01_v에다가 여러분의 정보를 넣어주십시오 50번 
+
+
+
+-- 5. 모든 end user(클라이언트, 실제로 가장 마지막 단에서 데이터를 조회하게 되는 사용자들) 가 
+-- 빈번히 사용하는 sql문장으로 "해당 직원의 모든 정보 검색"하기
+-- 내 이름이 아니라 다른 직원 정보를 조회할 때도 보여줘야 할 것 같은 정보와
+-- 그렇지 않은 정보를 구분해서 관리해보세요 
+
+
+	
+/* 윈도우 함수 - 익숙해지면 참 좋아요! 
+ 행과 행 간을 비교, 연산, 정의하기 위한 함수. -- 2019년, 2018년, 2020년 
+ 분석함수 또는 순위함수라고 부릅니다.
+ 다른 함수들처럼 중첩해서 사용할 수는 없지만 서브쿼리에서는 사용가능합니다.
+ 
+SELECT WINDOW_FUNCTION(ARGUMENTS) OVER([PARTITION BY 컬럼] [ORDER BY 컬럼] [WINDOWING 절])
+FROM 테이블명;
+
+순위 함수:	RANK, DENSE_RANK, ROW_NUMBER	 
+   90     1
+80 80     2      
+   75     4 
+
+3000
+2000
+1000
+1800
+1222
+4000   3000
+
+일반 집계 함수:	SUM, MAX, MIN, AVG, COUNT	
+그룹 내 행 순서 함수: FIRST_VALUE, LAST_VALUE, LAG, LEAD
+그룹 내 비율 함수:	RATIO_TO_REPROT, PERCENT_RANK, CUME_DIST, NTILE 등
+*/
+-- 용량이 아주 큰 DB를 만들어야 할 때 
+-- PARTITION BY 라는 구문을 이용하면 80년생 이하는 사람은 emp01, 85년생 이하인 사람 emp02 
+-- 논리적으로는 하나의 테이블이지만, 공간을 나누어서 저장을 하게 하는 경우도 있습니다 
+
+# 1) RANK
+-- ORDER BY를 포함한 쿼리문에서 특정 컬럼의 순위를 구하는 함수
+-- PARTITION 내에서 순위를 구할 수도 있고 전체 데이터에 대한 순위를 구할 수도 있다. 
+-- 동일한 값에 대해서는 같은 순위를 부여하며 중간 순위를 비운다.
+
+
+ 
+/* 2) DENSE_RANK (밀집, 밀도)
+1
+2 2
+3 
+
+RANK와 작동법은 동일, 동일한 값에 대해서는 
+같은 순위를 부여하고 중간 순위를 비우지 않는다. 
+동일한 값이 있는 경우 순위는 1,1,2,3,3,4
+*/
+
+ /* 3) ROW_NUMBER
+RANK, DENSE_RANK는 동일한 값에 대해 동일 순위를 부여하지만 
+ROW_NUMBER은 동일한 값이어도 고유한 순위를 부여한다.
+-- 'A1234' 이전에는 -> 1, 2, 3, 4, 5 -> PK를 임의로 만들어줄 때 사용한다 
+*/
+
+
+-- 겹치지 않는 번호를 부여해야 할 때, 순위별로 나눌 때도 사용을 하긴 합니다 
+-- 순서는 먼저 테이블에 들어간 값이 우선 순위를 부여받습니다 
+
+
+/* 윈도우 안에서 특정 값을 찾아내는 함수 
+1) FIRST_VALUE
+파티션별 윈도우에서 가장 먼저 나온 값을 구한다. MIN과 같음.
+
+2) LAST_VALUE
+파티션별 윈도우에서 가장 마지막에 나온 값을 구한다.
+
+3) LAG
+이전 몇 번째 행의 값을 가져오는 함수. 인자를 최대 3개까지 가진다.
+두번째 인자는 몇 번째 앞의 행을 가져올지 결정하는 것이며 DEFAULT값은 1이다. 
+세번째 인자는 가져올 행이 없을 경우 DEFAULT값을 지정해준다.
+
+4) LEAD
+이후 몇 번째 행의 값을 가져오는 함수로 LAG와 마찬가지로 인자를 최대 3개까지 갖는다. */
+
+-- LAG / LEAD : 2번째 인자로는 지금 기준으로 몇개 밀려난 순서에서 값을 가지고 올 것인지를 정해줍니다 
+-- LAG / LEAD : NULL인 경우 들어갈 디폴트값이 세번째 인자로 
+
+/* 4. 그룹 내 비율 함수
+-- 백분위 PERCENT_RANK, 누적비율 CUME_DIST, 상위에서 몇번째-NTILE  
+*/
+
+-- 최대값 기준으로 현재 행의 값이 몇 퍼센트 백분위인지 
+-- 부서별로 직원들이 최대임금 대비 몇퍼센트 정도 임금을 받고 있는지
+-- 누적비율 CUME_DIST
+-- NTILE : 전체 데이터를 특정 기준으로 N개의 그룹으로 나눌 때 
+
+
+/* 일반 집계 함수:	SUM, MAX, MIN, AVG, COUNT	
+순위 함수: RANK 1 1 3, DENSE_RANK 1 1 2, ROW_NUMBER
+그룹 내 행 순서 함수: FIRST_VALUE, LAST_VALUE, LAG, LEAD
+그룹 내 비율 함수:	PERCENT_RANK, CUME_DIST, NTILE 등
+*/
+
+-- 현재 회사에서 2번째로 돈을 많이 받는 사람은 누구일까요?
+-- 부서별로 돈을 가장 적게 받는 사람
+-- 부서별로 가장 돈을 많이 받는 사람만 확인할 수 있게 쿼리로 만들어서 결과를 출력해주세요
+-- 부서별로 가장 돈을 많이 받는 사람을 'MAXIMUM'이라는 컬럼에 별도로 출력해주세요 
+
+/* 
+1. 스토어드 프로시저(Stored Procedure)
+- SQL에서 프로그래밍이 가능해 주는 서버의 기능
+- 자주 사용하는 여러개의 SQL문을 한데 묶어 함수처럼 만들어 일괄적으로 처리하는 용도로 사용됩니다.
+- 첫 행과 마지막 행에 구분문자라는 의미의 DELIMITER ~ DELIMITER 문으로 감싼 후 사이에 BEGIN과 END 사이에 SQL문을 넣습니다.
+- DELIMITER에는 $$ // && @@ 등의 부호를 구분문자로 많이 사용합니다.
+- 위와 같이 작성해놓으면 CALL 프로시저명(); 으로 위의 SQL 묶음을 호출할 수 있습니다.
+
+- 장점
+    - 하나의 요청으로 여러 SQL문을 실행 할 수 있습니다.
+    - 독립적으로 실행됩니다. SELECT 문이나 다른 SQL 문에서 직접 사용할 수 없습니다.
+    - 데이터베이스 상태를 변경할 수 있습니다. INSERT, UPDATE, DELETE 문을 사용할 수 있습니다.
+    - 네트워크 소요 시간을 줄일 수 있습니다.
+        - 긴 여러개의 쿼리를 SP를 이용해서 구현한다면 SP를 호출할 때
+          한 번만 네트워크를 경유하기 때문에 네트워크 소요시간을 줄이고 성능을 개선할 수 있습니다.
+    - 개발 업무를 구분해 개발 할 수 있습니다.
+        - 순수한 애플리케이션만 개발하는 조직과 DBMS 관련 코드를 개발하는 조직이 따로 있다면,
+          DBMS 개발하는 조직에서는 데이터베이스 관련 처리하는 SP를 만들어 API처럼 제공하고 
+          애플리케이션 개발자는 SP를 호출해서 사용하는 형식으로 역할을 구분한 개발이 가능합니다.
+          
+          SHOW PROCEDURE STATUS; -- 프로시저 목록 확인
+		  SHOW CREATE PROCEDURE film_not_in_stock; -- 프로시저 내용 확인
+		  DROP PROCEDURE 프로시저이름; -- 프로시저 삭제
+		  CALL 프로시저이름(변수1, 변수2, 변수3);
+*/
+
+-- OUT 매개변수를 저장할 변수를 선언합니다.
+-- 저장 프로시저를 호출합니다.
+-- 결과를 확인합니다.
+
+-- IF 문을 사용한 스토어드 프로시저: 
+-- emp 테이블을 활용하여 hiredate가 1984년 이전인 직원들의 수를 세는 스토어드 프로시저 예제를 만들어보세요.
+-- procedure 이름은 employees_hireyear로 지정합니다.
+
+SELECT * FROM fisa.emp;
+USE fisa;
+
+
+/* 
+2. SQL 함수
+- 특정 작업을 수행하고 값을 반환하는 데 사용됩니다.
+- 항상 값을 반환합니다. 단일 값 또는 테이블 형식의 값을 반환할 수 있습니다.
+- SELECT 문, WHERE 절, JOIN 절 등에서 사용할 수 있습니다.
+- 데이터베이스 상태를 변경할 수 없습니다. 즉, INSERT, UPDATE, DELETE 문을 사용할 수 없습니다.
+
+	DELIMITER //
+
+	CREATE FUNCTION function_name(parameter_name parameter_type, ...)
+	RETURNS return_type
+	DETERMINISTIC  -- 함수가 동일한 입력에 대해 항상 동일한 출력을 반환함을 나타냅니다.
+	BEGIN
+		-- 변수 선언
+		DECLARE variable_name variable_type;
+
+		-- 함수 로직
+		-- 예: SELECT ... INTO variable_name FROM ... WHERE ...;
+
+		-- 반환 값
+		RETURN variable_name;
+	END //
+
+	DELIMITER ;
+
+SELECT sakila.inventory_in_stock(2);
+-- inventory_id가 1인 경우 재고 여부를 확인합니다.
+-- 이 구문을 실행하면 inventory_id가 1인 경우 재고에 있는지 여부를 확인할 수 있습니다.
+-- 결과는 1(재고 있음) 또는 0(재고 없음)으로 표시됩니다.
+
+*/
+
+
+
+-- ?? 함수를 호출하여 결과를 확인합니다.
+
+
+/* 
+3. TRIGGER
+- 사전적 의미로 '방아쇠'라는 뜻으로, MySQL에서 트리거는 테이블에서 어떤 이벤트가 발생했을 때 자동으로 실행되는 것을 말합니다.
+- 즉, 어떤 테이블에서 특정한 이벤트(update, insert, delete)가 발생했을 때, 실행시키고자 하는 추가 쿼리 작업들을 자동으로 수행할 수 있게끔 트리거를 미리 설정해 두는 것입니다. 
+- 트리거는 직접 실행시킬 수 없고 오직 해당 테이블에 이벤트가 발생할 경우에만 실행됩니다. 
+- DML에만 작동되며, MySQL에서는 VIEW에는 트리거를 사용할 수 없습니다.
+
+	DELIMITER $$
+
+	CREATE TRIGGER 트리거이름
+		AFTER DELETE -- 트리거를 달 동작
+		ON 테이블 FOR EACH ROW
+	BEGIN
+		-- 문장
+	END $$    
+
+	DELIMITER ;
+
+- BEFORE/AFTER는 명령 키워드가 사용된 후에 처리할지 아니면 끝난 후 처리할지를 나타냅니다.
+- 또한 처리할 내용 부분에서 OLD, NEW로 명령 키워드로 변경되는 테이블에 접근할 수 있습니다.
+    - ( OLD : 변경되기 전 테이블, NEW : 변경된 후 테이블 )
+- 프로시저는 특정 경우에만 동작시킨다면, 트리거는 매번 DML이 실행될 때마다 동작합니다.
+- truncate는 commit까지 완료되므로 trigger를 부착할 수 없습니다.
+
+*/
+
+CREATE DATABASE market;
+USE market;
+
+CREATE TABLE customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30),
+    email VARCHAR(30)
+);
+
+CREATE TABLE products (
+    product_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30),
+    price DECIMAL(10, 2)
+);
+
+CREATE TABLE orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    product_id INT,
+    order_date DATETIME,
+    quantity INT,
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+CREATE TABLE backup_order (
+    backup_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    customer_id INT,
+    product_id INT,
+    order_date DATETIME,
+    quantity INT
+);
+
+INSERT INTO customers (name, email) VALUES 
+('김철수', 'chulsoo.kim@example.com'),
+('박영희', 'younghee.park@example.com'),
+('이민수', 'minsoo.lee@example.com');
+
+INSERT INTO products (name, price) VALUES 
+('노트북', 1200.00),
+('스마트폰', 800.00),
+('헤드폰', 150.00);
+
+INSERT INTO orders (customer_id, product_id, order_date, quantity) VALUES 
+(1, 1, '2024-07-21 10:30:00', 1),
+(2, 3, '2024-07-21 11:00:00', 2),
+(3, 2, '2024-07-21 11:30:00', 1);
+
+DROP TRIGGER IF EXISTS test_trg;
+
+DELIMITER // 
+CREATE TRIGGER test_trg  -- 트리거 이름
+    AFTER DELETE -- 삭제후에 작동하도록 지정
+    ON market.orders -- 트리거를 부착할 테이블
+    FOR EACH ROW -- 각 행마다 적용시킴
+BEGIN
+	SET @msg = '주문 정보가 삭제됨' ; -- 트리거 실행시 작동되는 코드들
+END // 
+DELIMITER ;
+
+SELECT * FROM orders;
+
+DELETE FROM market.orders WHERE order_id=3;
+
+SELECT @msg;
+SHOW TRIGGERS LIKE 'orders';
+DROP TABLE IF EXISTS backup_order;
+CREATE TABLE backup_order
+	(backup_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    customer_id INT,
+    product_id INT,
+    order_date DATETIME,
+    cancle_date DATETIME,
+    quantity INT);
+
+DROP TRIGGER IF EXISTS backtable_update_trg;
