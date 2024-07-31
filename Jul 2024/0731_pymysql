@@ -192,3 +192,19 @@ df
 
 df.to_sql(name='jjanggu', con=engine, if_exists='append', index=False)
 
+conn = pymysql.connect(
+    user = USER,
+    passwd = PASSWD,
+    host = HOST,
+    port = PORT,
+    # autocommit = True # default : False # 오토커밋 기능 설정
+)
+
+conn
+
+conn.select_db("fisa") # use DB명;
+cursor = conn.cursor(pymysql.cursors.DictCursor) # 딕셔너리 형식으로 데이터를 받아오는 옵션. (기본값은 튜플로 값이 전달됩니다.)
+
+# SQL문 실행 - %s 로 변하는 값이 들어갈 자리를 비워둠.
+# 비워둔 자리 개수만큼 2번째 인자로 값을 튜플 안에 순서대로 전달
+# 데이타 Fetch
