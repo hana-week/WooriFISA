@@ -145,4 +145,3 @@ response = client.chat.completions.create(
 # Query를 DB에 사용해보기
 with db.connect() as conn:
     result = conn.execute(text(handle_response(response)))
-
