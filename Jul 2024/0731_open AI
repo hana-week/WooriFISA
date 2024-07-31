@@ -64,3 +64,85 @@ response = client.chat.completions.create(
     n=5
     # stop = ['.', '\n']
 )
+
+import numpy as np
+import pandas as pd
+import openai
+import pymysql
+import sqlalchemy
+# SQL DB 셋팅
+from sqlalchemy import create_engine
+from sqlalchemy import text # 쿼리 입력에 필요
+import pymysql
+
+#  echo=True : 쿼리문으로 변환한 결과를 화면에 print
+db = create_engine(r'mysql+pymysql://fisaai:woorifisa3!W@118.67.131.22:3306/fisa?charset=utf8mb4', echo=True)
+
+# 데이터 확인
+df.groupby('Region')['Total_Sales'].sum().sort_values(ascending=False)
+
+# SQL DB 셋팅
+from sqlalchemy import create_engine
+from sqlalchemy import text # 쿼리 입력에 필요
+import pymysql
+
+db = create_engine(r'mysql+pymysql://fisaai:woorifisa3!W@118.67.131.22:3306/fisa?charset=utf8mb4', echo=True)
+df.to_sql(name='sales_kyj', con=db)/
+
+with db.connect() as conn: # with 문이 끝나면 db를 닫아줍니다.
+    result = conn.execute(text("SELECT * FROM sales_kyj"))
+
+# GPT에게 우리가 다루는 데이터, 테이블이 어떤 구조인지 알려주는 함수 작성
+# 아래 테이블 구조 기준으로 코드를 작성해줄 것 요청
+# 재사용하기 위해서
+def table_definition_prompt(df):
+    prompt = '''Given the following MySQL SQL definition,
+            write queries based on the request
+            \n### MySQL SQL table, with its properties:
+
+            #
+            # sales_kyj({})
+            #
+            '''.format(",".join(str(x) for x in df.columns))
+
+    return prompt
+
+# 사용자로부터 어떤 것을 확인하고 싶은지 받는 내용의 함수
+
+def prompt_input():
+    nlp_text = input('궁금한 것이 무엇인가요?: ')
+    return nlp_text
+
+full_prompt = table_definition_prompt(df) + prompt_input()
+print(full_prompt) # Total Sales가 높은 Gender
+
+#  1. R T F C 프레임워크에 맞춰서 작성
+#  Role : AI가 수행할 역할을 명확히 정의
+#  Task : 수행할 구체적인 작업 기술
+#  Format : 결과물의 형식과 길이를 지정
+#  Constraints : 준수해야할 규칙과 제한을 명시
+
+# 2.
+
+# 3. Flipped Pattern: 개인 웹 페이지를 한 개 파일로 만들어 줘. 먼저 알아야 되는 내용에 대해 세 가지 질문을 해 줘.
+# https://brunch.co.kr/@bobbyryu/19
+# https://brunch.co.kr/@chorong92/15
+
+# API 호출
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are an assistant that generates SQL queries based on the given MySQL table definition\
+        and a natural language request. The query should start with 'SELECT' and end with a semicolon(;). You must give me a query statement without '\n' and add qutati"},
+        {"role": "user", "content": f"A query to answer: {full_prompt}"}
+    ],
+    max_tokens=200, # 비용 발생하므로 시도하며 적당한 값 찾아간다. 200이면 최대 200단어까지 생성.
+                    # 영어는 한 단어가 1토큰, 한글은 한 글자가 1토큰 정도
+    temperature=1.0, # 창의성 발휘 여부. 0~2 사이. 0에 가까우면 strict하게, 2에 가까우면 자유롭게(창의성 필요)
+    stop=None  # 특정 문자열이 들어오면 멈춘다든지. None이면 없음. .이면 문장이 끝나면 멈춘다든지
+    )
+
+# Query를 DB에 사용해보기
+with db.connect() as conn:
+    result = conn.execute(text(handle_response(response)))
+
