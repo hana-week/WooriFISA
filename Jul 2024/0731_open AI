@@ -1,0 +1,66 @@
+!pip install openai # 비용, 속도, 용량
+!pip install PyMySQL
+
+# You are a  very helpful code assistant.  / You are a very helpful English teacher.  / You are a  very helpful Chinese teacher.  각각 띄우고 질문.
+# Tell me about GO.
+
+# OPEN AI 셋팅
+import os
+from openai import OpenAI
+
+os.environ['OPENAI_API_KEY'] = '???'
+client = OpenAI()
+
+# zero shot
+import openai
+
+os.environ['OPENAI_API_KEY'] = '???'
+client = OpenAI()
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant. List three fruits:"}
+    ],
+    temperature=2,
+    max_tokens=50,
+    n=5
+    # stop = ['.', '\n']
+)
+
+# one shot
+import openai
+
+os.environ['OPENAI_API_KEY'] = '???'
+client = OpenAI()
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant. List three fruits:"},
+        {"role": "user", "content": "1.망고, 2.바나나, 3.오렌지"}
+    ],
+    temperature=1,
+    max_tokens=50,
+    n=5
+    # stop = ['.', '\n']
+)
+
+# few shot
+import openai
+
+os.environ['OPENAI_API_KEY'] = '???'
+client = OpenAI()
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant. List three fruits:"},
+        {"role": "user", "content": "1.망고, 2.바나나, 3.오렌지"},
+        {"role": "assistant", "content": "Get rid off the list num"}
+    ],
+    temperature=1,
+    max_tokens=50,
+    n=5
+    # stop = ['.', '\n']
+)
