@@ -1,0 +1,210 @@
+# 1. pymysql을 설치한다
+# 2. import 한다
+
+# 위의 코드를 한줄로 정리하셔러 2019년 개봉 영화 중 가장 매출이 높았던 영화 5개를 가져옵니다.
+import pymysql
+# 3. pymysql한테 3306 포트번호와 접속할 ID, PW를 준다
+connection = pymysql.connect(host='118.67.131.22',
+                             user='fisaai',
+                             password='woorifisa3!W',
+                             db='fisa')
+
+cursor = connection.cursor()
+cursor.execute('SELECT * from box_office WHERE year(release_date) = 2019 ORDER BY sale_amt DESC LIMIT 5')
+result = cursor.fetchall()
+# fetchall(), fetchone(), fetchmany(size=5)
+connection.close()
+
+result
+
+# 위의 코드를 한줄로 정리하셔러 2019년 개봉 영화 중 가장 매출이 높았던 영화 5개를 가져옵니다.
+pd.options.display.float_format = '{:.2f}'.format
+
+import pymysql
+# 3. pymysql한테 3306 포트번호와 접속할 ID, PW를 준다
+connection = pymysql.connect(host='118.67.131.22',
+                             user='fisaai',
+                             password='woorifisa3!W',
+                             db='fisa'
+SQL = 'SELECT * from box_office WHERE year(release_date) = 2019 ORDER BY sale_amt DESC LIMIT 5'
+
+
+data1 = pd.read_sql(SQL, connection)
+
+connection.close()
+data1
+
+import pymysql
+# 3. pymysql한테 3306 포트번호와 접속할 ID, PW를 준다
+connection = pymysql.connect(host='118.67.131.22',
+                             user='fisaai',
+                             password='woorifisa3!W',
+                             db='fisa')
+
+cursor = connection.cursor()
+cursor.execute('CREATE TABLE test (name varchar(10), age int)')
+connection.close()
+
+# 1. 모듈을 불러옵니다.
+import pymysql
+
+# 2. pymysql한테 3306 포트번호와 접속할 ID, PW를 준다
+connection = pymysql.connect(host='118.67.131.22',
+                             user='fisaai',
+                             password='woorifisa3!W',
+                             db='student_mgmt')
+
+# 3. 대신 일하게 만들 커서를 만듭니다.
+cursor = connection.cursor()
+
+# 4. 실행할 SQL문을 넘깁니다. - 기본적으로 한 번에 한 문장을 넘기는구나
+cursor.execute("INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('wage2', 'woman', '1982-1-13', 76, 30, 80);")
+cursor.execute("INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('tina2', 'woman', '1982-12-3', 87, 62, 71);")
+
+
+# 5. DB에 현재 상태를 COMMIT 합니다.
+connection.commit()
+
+# 6. DB와 연결을 닫습니다.
+connection.close()
+
+# 1. 모듈을 불러옵니다.
+import pymysql
+from pymysql.constants import CLIENT
+
+# 2. pymysql한테 3306 포트번호와 접속할 ID, PW를 준다
+connection = pymysql.connect(host='118.67.131.22',
+                             user='fisaai',
+                             password='woorifisa3!W',
+                             db='student_mgmt', client_flag=CLIENT.MULTI_STATEMENTS)
+
+# 3. 대신 일하게 만들 커서를 만듭니다.
+cursor = connection.cursor()
+
+# 4. 실행할 SQL문을 넘깁니다. - 옵션을 바꿔서 접속하면 여러 문장을 한번에 넘기는구나
+cursor.execute("INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('wage3', 'woman', '1982-1-13', 76, 30, 80); \
+                INSERT INTO students (name, gender, birth, english, math, korean) VALUES ('tina3', 'woman', '1982-12-3', 87, 62, 71);")
+
+
+# 5. DB에 현재 상태를 COMMIT 합니다.
+connection.commit()
+
+# 6. DB와 연결을 닫습니다.
+connection.close()
+
+# update
+# 3. WAGE의 이름을 SAGE로 변경
+# 1. 모듈을 불러옵니다.
+import pymysql
+from pymysql.constants import CLIENT
+
+# 2. pymysql한테 3306 포트번호와 접속할 ID, PW를 준다
+connection = pymysql.connect(host='118.67.131.22',
+                             user='fisaai',
+                             password='woorifisa3!W',
+                             db='student_mgmt', client_flag=CLIENT.MULTI_STATEMENTS)
+
+# 3. 대신 일하게 만들 커서를 만듭니다.
+cursor = connection.cursor()
+
+# 4. 실행할 SQL문을 넘깁니다. - 옵션을 바꿔서 접속하면 여러 문장을 한번에 넘기는구나
+cursor.execute("UPDATE students SET name='sage' WHERE name='wage';")
+
+# 5. DB에 현재 상태를 COMMIT 합니다.
+connection.commit()
+
+# 6. DB와 연결을 닫습니다.
+connection.close()
+
+# delete
+# 4. Minsun의 데이터를 삭제
+
+# 1. 모듈을 불러옵니다.
+import pymysql
+from pymysql.constants import CLIENT
+
+# 2. pymysql한테 3306 포트번호와 접속할 ID, PW를 준다
+connection = pymysql.connect(host='118.67.131.22',
+                             user='fisaai',
+                             password='woorifisa3!W',
+                             db='student_mgmt', client_flag=CLIENT.MULTI_STATEMENTS)
+
+# 3. 대신 일하게 만들 커서를 만듭니다.
+cursor = connection.cursor()
+
+# 4. 실행할 SQL문을 넘깁니다. - 옵션을 바꿔서 접속하면 여러 문장을 한번에 넘기는구나
+cursor.execute("DELETE FROM students WHERE name='Minsun';")
+
+# 5. DB에 현재 상태를 COMMIT 합니다.
+connection.commit()
+
+# 6. DB와 연결을 닫습니다.
+connection.close()
+
+import pymysql
+import pandas as pd
+pd.options.display.float_format = '{:.2f}'.format
+
+host_name = '118.67.131.22' # 구글 컴퓨터라 내 컴퓨터의 localhost에 접속 불가 - 어디서나 접속할 수 있는 원격 DB가 필요하다
+host_port = 3306
+username = 'fisaai'
+password = 'woorifisa3!W'
+database_name = 'fisa'
+
+db = pymysql.connect(
+    host=host_name,     # MySQL Server Address
+    port=host_port,          # MySQL Server Port
+    user=username,      # MySQL username
+    passwd=password,    # password for MySQL username
+    db=database_name,   # Database name
+    charset='utf8mb4'
+)
+
+import pandas as pd
+df = pd.read_sql("select * from emp",db) # read_csv 하면 csv 파일을 불러왔듯이 reqd_sql 함수
+df
+
+host_name = '118.67.131.22' # 구글 컴퓨터라 내 컴퓨터의 localhost에 접속 불가 - 어디서나 접속할 수 있는 원격 DB가 필요하다
+host_port = 3306
+username = 'fisaai'
+password = 'woorifisa3!W'
+database_name = 'fisa'
+
+df = pd.read_sql_query("select * from emp;",conn) # read_sql_table, read_sql_query
+df
+
+# df = pd.read_sql_table("emp",conn) # 향후 사용할 타 프레임워크와 호환되는 함수. pymysql에서는 작동하지 않음
+db.close() ### 이전 DB 커넥션을 끊어주세요
+
+# df1 이라는 이름으로 등록일자는 datetime, 테스트점수는 float으로 자료형을 변경한 후에
+# jjanggu1 이라는 테이블에 to_sql 명령어를 사용해서 데이터를 넣어주세요. 자료형을 확인해보세요.
+# db.yaml에 있는 정보를 바탕으로 중요정보를 익명처리해주세요.
+import pymysql
+from sqlalchemy import create_engine  # InnoDB
+import pandas as pd
+
+
+## 방법은 거의
+## 접속할DB종류+접속에사용할패키지명 + :// + userid:password @ 주소:포트번호/db?인코딩방법 의 형태를 띔
+engine = create_engine(f"mysql+pymysql://fisaai:woorifisa3!W@118.67.131.22:3306/fisa")
+df = pd.read_csv('jjangu_list2 (1).csv', index_col=0)
+df
+
+df.to_sql(name='jjanggu', con=engine, if_exists='append', index=False)
+
+conn = pymysql.connect(
+    user = USER,
+    passwd = PASSWD,
+    host = HOST,
+    port = PORT,
+    # autocommit = True # default : False # 오토커밋 기능 설정
+)
+
+conn
+
+conn.select_db("fisa") # use DB명;
+cursor = conn.cursor(pymysql.cursors.DictCursor) # 딕셔너리 형식으로 데이터를 받아오는 옵션. (기본값은 튜플로 값이 전달됩니다.)
+
+# SQL문 실행 - %s 로 변하는 값이 들어갈 자리를 비워둠.
+# 비워둔 자리 개수만큼 2번째 인자로 값을 튜플 안에 순서대로 전달
+# 데이타 Fetch
