@@ -1,0 +1,99 @@
+$ docker run --name mytomcat -d -p 80:8080 tomcat:9.0
+$ docker run --name ng -p 5000:80 nginx
+
+PORTS     NAMES
+c99282b585ae   nginx             "/docker-entrypoint.…"   21 hours ago   Up 14 seconds             80/tcp    elegant_lalande
+d9b37ddb3d21   nginx:latest      "/docker-entrypoint.…"   21 hours ago   Exited (0) 21 hours ago             competent_proskuriakova
+c4008a0d5ede   nginx:latest      "/docker-entrypoint.…"   22 hours ago   Exited (0) 22 hours ago             eager_margulis
+6e4d9e771840   nginx             "/docker-entrypoint.…"   22 hours ago   Exited (0) 22 hours ago             epic_snyder
+07acadfd6c64   docker/whalesay   "echo hi"                22 hours ago   Exited (0) 22 hours ago             infallible_almeida
+67b63f4fcc69   docker/whalesay   "hi"                     22 hours ago   Created                             elated_bohr
+51129d334fe5   docker/whalesay   "/bin/bash"              22 hours ago   Exited (0) 22 hours ago             friendly_stonebraker
+
+$docker run -d -p 9000:9000 --privileged -v /var/run/docker.sock:/var/run/docker.sock uifd/ui-for-docker
+Unable to find image 'uifd/ui-for-docker:latest' locally
+latest: Pulling from uifd/ui-for-docker
+841194d080c8: Pull complete
+Digest: sha256:fe371ff5a69549269b24073a5ab1244dd4c0b834cbadf244870572150b1cb749
+Status: Downloaded newer image for uifd/ui-for-docker:latest
+77f4719a1bd888b9dc3c0f5ed7960253bf0f5c1ed6c294d56d32fc7a05676083
+
+$docker ps
+CONTAINER ID   IMAGE                COMMAND            CREATED         STATUS         PORTS                    NAMES
+77f4719a1bd8   uifd/ui-for-docker   "/ui-for-docker"   5 seconds ago   Up 3 seconds   0.0.0.0:9000->9000/tcp   happy_bhabha
+
+$docker system info
+
+docker exec ng sh -c "ls"
+
+$docker run --name mytomcat -p 80:8080 tomcat:9.0 
+$docker run --name mytomcat -d -p 80:8080 tomcat:9.0
+
+# image 확인
+$docker images
+
+# container 실행확인
+$docker ps
+
+# 실행 확인을 위한 curl 접속
+$curl http://localhost
+$curl http://localhost:80
+
+# tomcat container로 유입
+$docker ps    # tomcat 컨테이너 id 확인
+$docker exec -it <container_id> bash
+
+# 주석: tomcat 컨테이너의 bash 명령어 창 진입
+#pwd
+#who  블랭크인 경우 root로 간주
+#cd /
+#cat /etc/os-release   운영체제 버전
+#java -version   tomcat 설치 시스템에는 반드시 jdk 설치가 우선
+#printenv   현 운영체제의 path 확인 jdk와 tomcat 자체의 환경 확인
+
+​- **$docker ps**
+- **$docker inspect <container_id>**
+**$docker ps -a  # container 확인**
+**$docker logs <container_id>**
+$docker logs  -f <container_id>
+
+#  운영 체제 정보를 확인
+$cat /etc/os-release 
+
+# 컨테이너의 운영 체제 정보 확인
+$docker exec 66552458d1bc sh -c "cat /etc/os-release"
+
+PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
+NAME="Debian GNU/Linux"
+VERSION_ID="11"
+VERSION="11 (bullseye)"
+VERSION_CODENAME=bullseye
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+
+$docker run --name mytomcat -p 80:8080 tomcat:9.0 
+$docker run --name mytomcat -d -p 80:8080 tomcat:9.0
+
+# image 확인
+$docker images
+
+# container 실행확인
+$docker ps
+
+# 실행 확인을 위한 curl 접속
+$curl http://localhost
+$curl http://localhost:80
+
+# tomcat container로 유입
+$docker ps    # tomcat 컨테이너 id 확인
+$docker exec -it <container_id> bash
+
+# 주석: tomcat 컨테이너의 bash 명령어 창 진입
+#pwd
+#who  블랭크인 경우 root로 간주
+#cd /
+#cat /etc/os-release   운영체제 버전
+#java -version   tomcat 설치 시스템에는 반드시 jdk 설치가 우선
+#printenv   현 운영체제의 path 확인 jdk와 tomcat 자체의 환경 확인
